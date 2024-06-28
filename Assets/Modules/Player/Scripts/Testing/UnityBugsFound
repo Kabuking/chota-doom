@@ -1,0 +1,4 @@
+﻿
+1. On Modifying list very fast, and if that list is exposed as serialized property
+Unity Editor will miss any fast update and throw object not found error
+    Sol: make field private

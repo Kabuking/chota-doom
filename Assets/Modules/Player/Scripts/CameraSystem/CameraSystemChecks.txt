@@ -1,0 +1,21 @@
+﻿
+# Camera System Check
+
+### Confirm Test Results
+1. PlayerCoopSystem (Check multiple modes)
+    1. Join 
+    2. Leave
+    
+2. In Game
+    1. Player Dead (left)
+    2. Respawn (is it through Coop or through game custom sysetm)
+    
+
+
+### Tweak
+
+1. Lerp instead of Snapping follow
+
+
+### For Debug Playtesting
+1. Make faster approach to toggle between development mode and production mode

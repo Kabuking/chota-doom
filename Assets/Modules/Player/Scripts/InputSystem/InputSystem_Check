@@ -1,0 +1,16 @@
+﻿
+TODO
+
+Setting to change
+1. Target switch type
+    1. Nearest next (Single switch)
+    2. Left Right Switch mode
+        Priority Mode:
+            1. X, Z , Y
+            2. Z, 
+            
+            
+2. Item Switch 
+    Introduce Item Switch Modes
+    1. Left Right (arrow keys <- , ->)
+    2. Direct slot select (1, 2, 3, 4)   

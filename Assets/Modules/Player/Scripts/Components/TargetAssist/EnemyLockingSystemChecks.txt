@@ -1,0 +1,66 @@
+﻿#To Test
+
+
+1. **On Player join** - Does it gets triggered during test mode ?
+<br> In situation of (already there or placed in the scene)
+    
+    1. Test Enemy response on player join and left 
+        1. (auto (through coop), manual, and during gameplay)
+    
+    2. Test if locking system is updated on Enemy side on different situations.
+       List all possible situations
+        1. Player Joined in game
+        2. Player locked you
+        3. Player died/left without releasing the lock
+        4. Player died/left releasing the lock
+        5. Player respawned
+        6. Both Player1 and Player2 are locking you
+            1. Visual Cue 
+                1. No need to update Visual Cue for two player lock ?
+                2. Update Visual cue for two player lock ?
+                    
+        7. Player1 locked you Player2 released you and vice versa
+        8. Both player died
+        
+    3. Is OnPlayerJoin and OnPlayerLeft required on Manual testing
+    
+<br>    
+2. On Player join through CoopSystem
+    1. Test Locking system update to Enemy
+    
+    
+    
+    
+Current Tracking.
+
+ToDo
+    
+    Enemy Locking System
+    
+    Switching Based on Forward Of Player (left and right)
+    1. Left Right Locking System
+        Expected behaviour
+            1. Left Switch ->
+                Filter Whoever is in the Gun Range
+                Start scanning from last enemy locked to left side
+                If already someone on top -> switch there -> then switch left whoever is closest in terms of x direction from last enemy
+                    which means  
+                            E3
+                        E1      E2
+                        
+                                P1
+                    Current Lock is E2, next left switch should be E3 not E1
+                    And if someone is on top of E2, switch to that top and then if pressed again -> then switch to E3
+                    
+            2. Similar to Right Switch
+            
+    2. Question what about situation when Player is ahead of Enemy
+        
+        TRICKY --- Later
+                P1
+                
+        E1      E3
+            E2
+            
+            
+            

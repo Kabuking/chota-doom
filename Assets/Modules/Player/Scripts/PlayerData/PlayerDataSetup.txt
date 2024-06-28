@@ -1,0 +1,8 @@
+﻿
+TO DO
+
+//For easy playtesting
+1. Single File (Scriptable Object) - Common default to store all player properties
+    Abilities
+    Settings
+    

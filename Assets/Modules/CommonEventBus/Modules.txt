@@ -1,0 +1,2 @@
+﻿
+All Modules communicate each other through event Bus in this directory
