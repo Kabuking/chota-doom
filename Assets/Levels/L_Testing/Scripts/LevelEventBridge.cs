@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace Level.Scripts
 {
     
-    [CreateAssetMenu(fileName = "LevelEventBridge", menuName = "Gameplay/LevelEventBride")]
+    [CreateAssetMenu(fileName = "LevelEventBridge", menuName = "Gameplay/LevelEventBridge")]
     public class LevelEventBridge: ScriptableObject
     {
         public UnityAction<EnemyBase> OnEnemyJoined;

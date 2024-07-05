@@ -9,11 +9,11 @@ namespace Modules.Enemy
         [SerializeField] private LevelEventBridge levelEventBridge;
         public static EnemyManager instance;
 
-        private List<EnemyBase> allEnemies = new List<EnemyBase>();
+        public List<EnemyBase> allEnemies = new List<EnemyBase>();
 
         public List<EnemyBase> GetAllEnemies() => allEnemies;
         
-        [Header("DEbug")]
+        [Header("Debug")]
         [SerializeField] private bool killAllEnemies = false;
         private void Awake()
         {
@@ -28,7 +28,6 @@ namespace Modules.Enemy
 
             levelEventBridge.OnEnemyJoined += OnEnemyJoinedBattle;
             levelEventBridge.OnEnemyDestroyed += OnEnemyLeftBattle;
-
         }
 
         private void Update()
