@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using Level.Scripts;
+using Levels.L_Testing.Scripts;
 using UnityEngine;
 
 namespace Modules.Enemy
 {
     public class EnemyManager: MonoBehaviour
     {
-        [SerializeField] private LevelEventBridge levelEventBridge;
         public static EnemyManager instance;
 
         public List<EnemyBase> allEnemies = new List<EnemyBase>();
@@ -26,8 +25,8 @@ namespace Modules.Enemy
                 Destroy(gameObject);
             }
 
-            levelEventBridge.OnEnemyJoined += OnEnemyJoinedBattle;
-            levelEventBridge.OnEnemyDestroyed += OnEnemyLeftBattle;
+            LevelEventBridge.OnEnemyJoined += OnEnemyJoinedBattle;
+            LevelEventBridge.OnEnemyDestroyed += OnEnemyLeftBattle;
         }
 
         private void Update()
@@ -40,8 +39,8 @@ namespace Modules.Enemy
 
         private void OnDisable()
         {
-            levelEventBridge.OnEnemyJoined -= OnEnemyJoinedBattle;
-            levelEventBridge.OnEnemyDestroyed -= OnEnemyLeftBattle;
+            LevelEventBridge.OnEnemyJoined -= OnEnemyJoinedBattle;
+            LevelEventBridge.OnEnemyDestroyed -= OnEnemyLeftBattle;
         }
 
         void OnEnemyJoinedBattle(EnemyBase enemyJoined)
@@ -55,7 +54,7 @@ namespace Modules.Enemy
             allEnemies.Remove(enemyBase);
             if (allEnemies.Count == 0)
             {
-                levelEventBridge.NoEnemiesLeftInGame?.Invoke();
+                LevelEventBridge.NoEnemiesLeftInGame?.Invoke();
             }
         }
         

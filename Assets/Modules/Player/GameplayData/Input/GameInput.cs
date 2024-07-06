@@ -91,15 +91,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Evade"",
-                    ""type"": ""Button"",
-                    ""id"": ""5ccf2f02-9ca1-4e27-ab30-a8c9645ddf8f"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""ItemPickup"",
                     ""type"": ""Button"",
                     ""id"": ""95e7b3c2-46d5-4fe1-bcb3-1a95bb85f1d8"",
@@ -148,6 +139,69 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""name"": ""ItemDrop"",
                     ""type"": ""Button"",
                     ""id"": ""db02ccab-6341-48e3-8450-32a39eb8a86f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""57d872b9-10a4-4c57-93c6-ab9a6c7dc562"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability1"",
+                    ""type"": ""Button"",
+                    ""id"": ""96254724-f877-4b9a-93f1-5e1d211b86b4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability2"",
+                    ""type"": ""Button"",
+                    ""id"": ""e12db829-b964-4adc-91c9-748c1564f5c1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability3"",
+                    ""type"": ""Button"",
+                    ""id"": ""12d64b8b-39bd-4500-b936-94bf344e389e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability4"",
+                    ""type"": ""Button"",
+                    ""id"": ""0191f9d4-c8f3-419d-a7fc-e45bacdf3358"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability5"",
+                    ""type"": ""Button"",
+                    ""id"": ""6e592e13-08ea-4cc9-ab18-ec2c78975547"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Test_ApplyDamage"",
+                    ""type"": ""Button"",
+                    ""id"": ""d64c47b2-3964-4ed0-b19b-d9c6f285d6f8"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -366,28 +420,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4245bae9-24b4-4fdc-b484-fe3aa523afc4"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Evade"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""59d90e92-77f8-48a5-84f1-4fa8dc0995d8"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Evade"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""e0c33884-854e-473d-b4b2-21a7ce62b5d3"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
@@ -583,6 +615,83 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""ItemDrop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37dee908-dc92-42b1-a610-f659e15a62af"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70fc50b6-3430-483e-88d7-479a8c5f79b5"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25f36838-9ccf-4a35-8dd5-ef1928d09ac2"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""daeb5a61-2d03-422c-8b70-137a59fa883c"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3307916c-5821-4264-beb5-3c0c8e6e07cf"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a20ddbb-3ac9-4c14-b8b0-040ae16169c3"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0dc5c9fc-724d-454d-999d-d0d0ecb143f8"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test_ApplyDamage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -621,13 +730,19 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Gameplay_ReloadGun = m_Gameplay.FindAction("ReloadGun", throwIfNotFound: true);
         m_Gameplay_PaceControl = m_Gameplay.FindAction("PaceControl", throwIfNotFound: true);
         m_Gameplay_Aim = m_Gameplay.FindAction("Aim", throwIfNotFound: true);
-        m_Gameplay_Evade = m_Gameplay.FindAction("Evade", throwIfNotFound: true);
         m_Gameplay_ItemPickup = m_Gameplay.FindAction("ItemPickup", throwIfNotFound: true);
         m_Gameplay_ItemSwitchLR = m_Gameplay.FindAction("ItemSwitchLR", throwIfNotFound: true);
         m_Gameplay_TargetSwitchLR = m_Gameplay.FindAction("TargetSwitchLR", throwIfNotFound: true);
         m_Gameplay_TargetSwitchRSFlick = m_Gameplay.FindAction("TargetSwitchRSFlick", throwIfNotFound: true);
         m_Gameplay_TargetSwitchButton = m_Gameplay.FindAction("TargetSwitchButton", throwIfNotFound: true);
         m_Gameplay_ItemDrop = m_Gameplay.FindAction("ItemDrop", throwIfNotFound: true);
+        m_Gameplay_Crouch = m_Gameplay.FindAction("Crouch", throwIfNotFound: true);
+        m_Gameplay_Ability1 = m_Gameplay.FindAction("Ability1", throwIfNotFound: true);
+        m_Gameplay_Ability2 = m_Gameplay.FindAction("Ability2", throwIfNotFound: true);
+        m_Gameplay_Ability3 = m_Gameplay.FindAction("Ability3", throwIfNotFound: true);
+        m_Gameplay_Ability4 = m_Gameplay.FindAction("Ability4", throwIfNotFound: true);
+        m_Gameplay_Ability5 = m_Gameplay.FindAction("Ability5", throwIfNotFound: true);
+        m_Gameplay_Test_ApplyDamage = m_Gameplay.FindAction("Test_ApplyDamage", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -696,13 +811,19 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_ReloadGun;
     private readonly InputAction m_Gameplay_PaceControl;
     private readonly InputAction m_Gameplay_Aim;
-    private readonly InputAction m_Gameplay_Evade;
     private readonly InputAction m_Gameplay_ItemPickup;
     private readonly InputAction m_Gameplay_ItemSwitchLR;
     private readonly InputAction m_Gameplay_TargetSwitchLR;
     private readonly InputAction m_Gameplay_TargetSwitchRSFlick;
     private readonly InputAction m_Gameplay_TargetSwitchButton;
     private readonly InputAction m_Gameplay_ItemDrop;
+    private readonly InputAction m_Gameplay_Crouch;
+    private readonly InputAction m_Gameplay_Ability1;
+    private readonly InputAction m_Gameplay_Ability2;
+    private readonly InputAction m_Gameplay_Ability3;
+    private readonly InputAction m_Gameplay_Ability4;
+    private readonly InputAction m_Gameplay_Ability5;
+    private readonly InputAction m_Gameplay_Test_ApplyDamage;
     public struct GameplayActions
     {
         private @GameInput m_Wrapper;
@@ -714,13 +835,19 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @ReloadGun => m_Wrapper.m_Gameplay_ReloadGun;
         public InputAction @PaceControl => m_Wrapper.m_Gameplay_PaceControl;
         public InputAction @Aim => m_Wrapper.m_Gameplay_Aim;
-        public InputAction @Evade => m_Wrapper.m_Gameplay_Evade;
         public InputAction @ItemPickup => m_Wrapper.m_Gameplay_ItemPickup;
         public InputAction @ItemSwitchLR => m_Wrapper.m_Gameplay_ItemSwitchLR;
         public InputAction @TargetSwitchLR => m_Wrapper.m_Gameplay_TargetSwitchLR;
         public InputAction @TargetSwitchRSFlick => m_Wrapper.m_Gameplay_TargetSwitchRSFlick;
         public InputAction @TargetSwitchButton => m_Wrapper.m_Gameplay_TargetSwitchButton;
         public InputAction @ItemDrop => m_Wrapper.m_Gameplay_ItemDrop;
+        public InputAction @Crouch => m_Wrapper.m_Gameplay_Crouch;
+        public InputAction @Ability1 => m_Wrapper.m_Gameplay_Ability1;
+        public InputAction @Ability2 => m_Wrapper.m_Gameplay_Ability2;
+        public InputAction @Ability3 => m_Wrapper.m_Gameplay_Ability3;
+        public InputAction @Ability4 => m_Wrapper.m_Gameplay_Ability4;
+        public InputAction @Ability5 => m_Wrapper.m_Gameplay_Ability5;
+        public InputAction @Test_ApplyDamage => m_Wrapper.m_Gameplay_Test_ApplyDamage;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -751,9 +878,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
-            @Evade.started += instance.OnEvade;
-            @Evade.performed += instance.OnEvade;
-            @Evade.canceled += instance.OnEvade;
             @ItemPickup.started += instance.OnItemPickup;
             @ItemPickup.performed += instance.OnItemPickup;
             @ItemPickup.canceled += instance.OnItemPickup;
@@ -772,6 +896,27 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @ItemDrop.started += instance.OnItemDrop;
             @ItemDrop.performed += instance.OnItemDrop;
             @ItemDrop.canceled += instance.OnItemDrop;
+            @Crouch.started += instance.OnCrouch;
+            @Crouch.performed += instance.OnCrouch;
+            @Crouch.canceled += instance.OnCrouch;
+            @Ability1.started += instance.OnAbility1;
+            @Ability1.performed += instance.OnAbility1;
+            @Ability1.canceled += instance.OnAbility1;
+            @Ability2.started += instance.OnAbility2;
+            @Ability2.performed += instance.OnAbility2;
+            @Ability2.canceled += instance.OnAbility2;
+            @Ability3.started += instance.OnAbility3;
+            @Ability3.performed += instance.OnAbility3;
+            @Ability3.canceled += instance.OnAbility3;
+            @Ability4.started += instance.OnAbility4;
+            @Ability4.performed += instance.OnAbility4;
+            @Ability4.canceled += instance.OnAbility4;
+            @Ability5.started += instance.OnAbility5;
+            @Ability5.performed += instance.OnAbility5;
+            @Ability5.canceled += instance.OnAbility5;
+            @Test_ApplyDamage.started += instance.OnTest_ApplyDamage;
+            @Test_ApplyDamage.performed += instance.OnTest_ApplyDamage;
+            @Test_ApplyDamage.canceled += instance.OnTest_ApplyDamage;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -797,9 +942,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
-            @Evade.started -= instance.OnEvade;
-            @Evade.performed -= instance.OnEvade;
-            @Evade.canceled -= instance.OnEvade;
             @ItemPickup.started -= instance.OnItemPickup;
             @ItemPickup.performed -= instance.OnItemPickup;
             @ItemPickup.canceled -= instance.OnItemPickup;
@@ -818,6 +960,27 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @ItemDrop.started -= instance.OnItemDrop;
             @ItemDrop.performed -= instance.OnItemDrop;
             @ItemDrop.canceled -= instance.OnItemDrop;
+            @Crouch.started -= instance.OnCrouch;
+            @Crouch.performed -= instance.OnCrouch;
+            @Crouch.canceled -= instance.OnCrouch;
+            @Ability1.started -= instance.OnAbility1;
+            @Ability1.performed -= instance.OnAbility1;
+            @Ability1.canceled -= instance.OnAbility1;
+            @Ability2.started -= instance.OnAbility2;
+            @Ability2.performed -= instance.OnAbility2;
+            @Ability2.canceled -= instance.OnAbility2;
+            @Ability3.started -= instance.OnAbility3;
+            @Ability3.performed -= instance.OnAbility3;
+            @Ability3.canceled -= instance.OnAbility3;
+            @Ability4.started -= instance.OnAbility4;
+            @Ability4.performed -= instance.OnAbility4;
+            @Ability4.canceled -= instance.OnAbility4;
+            @Ability5.started -= instance.OnAbility5;
+            @Ability5.performed -= instance.OnAbility5;
+            @Ability5.canceled -= instance.OnAbility5;
+            @Test_ApplyDamage.started -= instance.OnTest_ApplyDamage;
+            @Test_ApplyDamage.performed -= instance.OnTest_ApplyDamage;
+            @Test_ApplyDamage.canceled -= instance.OnTest_ApplyDamage;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -862,12 +1025,18 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnReloadGun(InputAction.CallbackContext context);
         void OnPaceControl(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
-        void OnEvade(InputAction.CallbackContext context);
         void OnItemPickup(InputAction.CallbackContext context);
         void OnItemSwitchLR(InputAction.CallbackContext context);
         void OnTargetSwitchLR(InputAction.CallbackContext context);
         void OnTargetSwitchRSFlick(InputAction.CallbackContext context);
         void OnTargetSwitchButton(InputAction.CallbackContext context);
         void OnItemDrop(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
+        void OnAbility1(InputAction.CallbackContext context);
+        void OnAbility2(InputAction.CallbackContext context);
+        void OnAbility3(InputAction.CallbackContext context);
+        void OnAbility4(InputAction.CallbackContext context);
+        void OnAbility5(InputAction.CallbackContext context);
+        void OnTest_ApplyDamage(InputAction.CallbackContext context);
     }
 }

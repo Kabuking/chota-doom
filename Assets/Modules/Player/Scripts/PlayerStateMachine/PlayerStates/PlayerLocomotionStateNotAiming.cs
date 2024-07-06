@@ -1,4 +1,6 @@
-﻿using Modules.Player.Scripts.PlayerStateMachine.model;
+﻿using Characters.Player.Global;
+using Modules.Player.Scripts.Controller;
+using Modules.Player.Scripts.PlayerStateMachine.model;
 using UnityHFSM;
 
 namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
@@ -8,7 +10,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         private LocomotionNotAiming_Substate _locomotionState;
         private LocomotionNotAiming_CombatSubstate _combatState;
         
-        public PlayerLocomotionStateNotAiming(StateMachine<PlayerStateName, PlayerStateTransitionEvent> playerStateMachine, PlayerController.PlayerController controller) : base(playerStateMachine, controller)
+        public PlayerLocomotionStateNotAiming(StateMachine<PlayerStateName, PlayerStateTransitionEvent> playerStateMachine, PlayerController controller) : base(playerStateMachine, controller)
         {
             _locomotionState = LocomotionNotAiming_Substate.Standing;
             _combatState = LocomotionNotAiming_CombatSubstate.Idle;
@@ -24,8 +26,10 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             base.OnLogic();
             
             HandleMovement(_playerStats.jogging_OnNotAiming);
-
-            CheckTransitionTo_Evade();
+            
+            if (CheckAndTriggerTransitionTo_Hurt()) { }
+            else if (TransitionForAbilityCheck()) {}
+            else if (CheckTransitionTo_Crouch()) { }
         }
 
         void HandleMovement(float speed)

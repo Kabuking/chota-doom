@@ -1,7 +1,10 @@
-﻿using Modules.Loadout.Scripts.Manager;
+﻿using Modules.Common.Abilities.Base.model;
+using Modules.Loadout.Scripts.Manager;
+using Modules.Player.Scripts.Abilities.Base;
 using Modules.Player.Scripts.ComponentEventBus;
 using Modules.Player.Scripts.Components;
 using Modules.Player.Scripts.Components.TargetAssist;
+using Modules.Player.Scripts.Controller;
 using Modules.Player.Scripts.InputSystem;
 using Modules.Player.Scripts.PlayerData;
 using Modules.Player.Scripts.PlayerStateMachine.model;
@@ -17,15 +20,23 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         protected readonly PlayerInputMapping playerInputMapping;
         protected GameplayLoadoutOnPlayer _itemManager;
 
-        protected PlayerComponentEventBus _playerComponentEventBus;
+        protected readonly PlayerComponentEventBus _playerComponentEventBus;
         
         // protected playerGameplayState _playerGameplayState;
 
         protected PlayerStats _playerStats;
         protected PlayerGameplayStatsState playerGameplayState;
+        protected PlayerController playerController;
 
-        protected PlayerController.PlayerController playerController;
-        public PlayerStateBase(StateMachine<PlayerStateName, PlayerStateTransitionEvent> playerStateMachine, PlayerController.PlayerController controller)
+
+        protected PlayerAbilityManager _playerAbilityManager;
+
+        private PlayerDamageSystem _playerDamageSystem;
+        
+        //Might not be initialized
+        protected AbilityBase crouchAbility;
+        
+        public PlayerStateBase(StateMachine<PlayerStateName, PlayerStateTransitionEvent> playerStateMachine, PlayerController controller)
         {
             _playerStateMachine = playerStateMachine;
             characterMovement = controller.GetComponent<PCharacterMovement>();
@@ -35,6 +46,10 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             _playerStats = controller.playerStats;
             playerController = controller;
             _playerComponentEventBus = controller.transform.root.GetComponent<PlayerComponentEventBus>();
+            _playerAbilityManager = controller.GetComponent<PlayerAbilityManager>();
+            _playerDamageSystem = controller.GetComponent<PlayerDamageSystem>();
+                
+            crouchAbility = _playerAbilityManager.GetDefaultAbility(AbilityType.Crouch);
         }
         public override void OnEnter()
         {
@@ -60,7 +75,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         
         protected virtual void CheckForTransition_OnLogic() { }
         
-        protected void TriggerStateTransitionLocally(PlayerStateTransitionEvent playerStateTransitionEvent)
+        protected void TriggerLocalTransition(PlayerStateTransitionEvent playerStateTransitionEvent)
         {
 
             playerController.enableTickOnStateLogic = false;
@@ -68,31 +83,62 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             
         }
         
-        protected void CheckTransitionTo_CombatIdle()
+        protected void CheckAndTriggerTransitionTo_CombatIdle()
         {
             if (playerInputMapping.incomingMovementVector == Vector2.zero
                 && !playerInputMapping.sprintPerforming)//TODO: Convert to event
             {
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_CombatIdle);
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_CombatIdle);
+            }
+        }
+
+        protected bool TransitionForAbilityCheck()
+        {
+            if (_playerAbilityManager.CanIPerformAbilityAbility())
+            {
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_Ability);
+                return true;
+            }
+            else return false;
+        } 
+        
+        protected bool CheckAndTriggerTransitionTo_Hurt()
+        {
+            if (_playerDamageSystem.IsTakingDamage && _playerDamageSystem.coolDownFinished)//TODO: Convert to event
+            {
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_Hurt);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         
+        protected bool ExitConditionFromHurt()
+        {
+            if (_playerDamageSystem.coolDownFinished)//TODO: Convert to event
+            {
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_LocomotionNotAiming);
+                return true;
+            }
+            return false;
+        }
         
-        protected void ForceTransitionTo_LocomotionAiming() => TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_LocomotionAiming);
-        protected void ForceTransitionTo_LocomotionNotAiming() => TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_LocomotionNotAiming);
+        protected void ForceTransitionTo_LocomotionAiming() => TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_LocomotionAiming);
+        protected void ForceTransitionTo_LocomotionNotAiming() => TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_LocomotionNotAiming);
         
         
-        protected void ForceTransitionToRoll() => TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Roll);
         // protected void ForceTransitionToLocomotion() => TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Locomotion);
-        protected void ForceTransitionToCombatIdle() => TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_CombatIdle);
-        protected void ForceTransitionToJogging() => TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Run);
-        protected void ForceTransitionToTest() => TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Test);
+        protected void ForceTransitionToCombatIdle() => TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_CombatIdle);
+        protected void ForceTransitionToJogging() => TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_Run);
+        protected void ForceTransitionToTest() => TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_Test);
 
         protected bool CheckTransitionTo_Jogging()
         {
             if (CheckIfInput_Jogging())
             {
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Run);
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_Run);
                 return true;
             }
             else return false;
@@ -129,31 +175,14 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
                 return false;
             }
         }*/
+        
 
-        protected void CheckTransitionTo_PaceControl()
+        protected bool CheckTransitionTo_Crouch()
         {
-            if(playerInputMapping.paceControlPerforming)
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_PaceControl);
-        }
-        
-        /*protected bool CheckTransitionTo_Dashing()
-        {
-            if (playerInputMapping.performDash && playerGameplayState.ableToPerformDash && playerInputMapping.incomingMovementVector != Vector2.zero)
+            if (playerInputMapping.crouchPerforming && crouchAbility.coolDownFinished)
             {
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Dash);
-                return true;
-            }
-            else return false;
-        }
-        */
-        
-        
-        protected bool CheckTransitionTo_Evade()
-        {
-            if (playerInputMapping.performEvade && playerGameplayState.ableToPerformEvade)
-            {
-                // DebugX.LogWithColorCyan("Trigger transition to evade");
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Evade);
+                // DebugX.LogWithColorCyan("Trigger transition to crouch");
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_Crouch);
                 return true;
             }
             else return false;
@@ -164,7 +193,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         {
             if (playerInputMapping.IsAiming)
             {
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_LocomotionAiming);
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_LocomotionAiming);
                 return true;
             }
             else return false;
@@ -174,7 +203,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         {
             if (playerInputMapping.IsAiming == false)
             {
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_LocomotionNotAiming);
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_LocomotionNotAiming);
                 return true;
             }
             else return false;
@@ -184,13 +213,19 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         {
             if (playerInputMapping.performReload)
             {
-                TriggerStateTransitionLocally(PlayerStateTransitionEvent.Transition_To_Reload);
+                TriggerLocalTransition(PlayerStateTransitionEvent.Transition_To_Reload);
                 return true;
             }
             else{
                 return false;
             }
         }
+
+
+
+
+        protected bool CanPerformAbility() => _playerAbilityManager.CanIPerformAbilityAbility();
+        
         
         #endregion
         
@@ -249,5 +284,24 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         // public PlayerStateBase  AddAction_Reload_Perform() { AddAction(PlayerStateTransitionEvent.ReloadGun, OnInput_WeaponReload); return this; }
         
 
+        //Ability Related
+
+
+        
+        /*protected virtual void OnInput_Ability1_Trigger() { _playerComponentEventBus.PerformAbility?.Invoke(PlayerInputMapping.AbilityTriggeredInputType.Ability1); }
+        protected virtual void OnInput_Ability2_Trigger() { _playerComponentEventBus.PerformAbility?.Invoke(PlayerInputMapping.AbilityTriggeredInputType.Ability2); }
+        protected virtual void OnInput_Ability3_Trigger() {_playerComponentEventBus.PerformAbility?.Invoke(PlayerInputMapping.AbilityTriggeredInputType.Ability3); }
+        protected virtual void OnInput_Ability4_Trigger() {_playerComponentEventBus.PerformAbility?.Invoke(PlayerInputMapping.AbilityTriggeredInputType.Ability4); }
+        protected virtual void OnInput_Ability5_Trigger() { _playerComponentEventBus.PerformAbility?.Invoke(PlayerInputMapping.AbilityTriggeredInputType.Ability5); }
+
+
+        public PlayerStateBase AddAction_Ability1() { AddAction(PlayerStateTransitionEvent.Ability1, OnInput_Ability1_Trigger); return this; }
+        public PlayerStateBase AddAction_Ability2() { AddAction(PlayerStateTransitionEvent.Ability2, OnInput_Ability2_Trigger); return this; }
+        public PlayerStateBase AddAction_Ability3() { AddAction(PlayerStateTransitionEvent.Ability3, OnInput_Ability3_Trigger); return this; }
+        public PlayerStateBase AddAction_Ability4() { AddAction(PlayerStateTransitionEvent.Ability4, OnInput_Ability4_Trigger); return this; }
+        public PlayerStateBase AddAction_Ability5() { AddAction(PlayerStateTransitionEvent.Ability5, OnInput_Ability5_Trigger); return this; }*/
+
+
+        
     }
 }

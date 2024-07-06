@@ -29,7 +29,7 @@ namespace Modules.Loadout.Scripts.Manager
         private PlayerInput _playerInput;
         private PlayerInputMapping _playerInputMapping;
 
-        private void Awake()
+        public void InitLoadOut()
         {
             DebugX.LogWithColorYellow(startingItems.Count + " << Starting items");
             _playerComponentEventBus = GetComponent<PlayerComponentEventBus>();
@@ -67,8 +67,8 @@ namespace Modules.Loadout.Scripts.Manager
             itemRack.InitializeItemRack(maxNumberOfSlots, startingItems);
         }
         
-        public void OnItemUse() { itemRack.ActiveItemSlot.Item.OnItemUse(); }
-        public void OnItemUseStop() { itemRack.ActiveItemSlot.Item.OnItemUseStop(); }
+        public void OnItemUse() { itemRack.ActiveItemSlot?.Item.OnItemUse(); }
+        public void OnItemUseStop() { itemRack.ActiveItemSlot?.Item.OnItemUseStop(); }
         public void ReceiveItemSwitchLeftRight() => itemRack.ReceiveItemSwitch();
         private void ReceivePickUpInput(ItemBase pickUpItemBase) { if (pickUpItemBase == null) return; itemRack.ReceiveItemPick(pickUpItemBase); }
         private void ReceiveItemDropInput() { itemRack.ReceiveItemDrop(); }

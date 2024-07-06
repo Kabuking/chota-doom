@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using Characters.Enemy;
-using Modules.Enemy;
-using UnityEngine;
+﻿using Modules.Enemy;
 using UnityEngine.Events;
 
-namespace Level.Scripts
+namespace Levels.L_Testing.Scripts
 {
     
-    [CreateAssetMenu(fileName = "LevelEventBridge", menuName = "Gameplay/LevelEventBridge")]
-    public class LevelEventBridge: ScriptableObject
+    public static class LevelEventBridge
     {
-        public UnityAction<EnemyBase> OnEnemyJoined;
-        public UnityAction<EnemyBase> OnEnemyDestroyed;
+        public static UnityAction<EnemyBase> OnEnemyJoined;
+        public static UnityAction<EnemyBase> OnEnemyDestroyed;
 
-        public UnityAction NoEnemiesLeftInGame;
+        public static UnityAction NoEnemiesLeftInGame;
     }
 }

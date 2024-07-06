@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections;
-using Level.Scripts;
-using Modules.Enemy;
+﻿using System.Collections;
+using Levels.L_Testing.Scripts;
 using UnityEngine;
 
-namespace Characters.Enemy
+namespace Modules.Enemy
 {
     public class EnemyLevelNotifier: MonoBehaviour
     {
-        [SerializeField] private LevelEventBridge _levelEventBridge;
-
         private void OnEnable()
         {
             StartCoroutine(NotifyEnemyManger());
@@ -18,8 +14,8 @@ namespace Characters.Enemy
 
         private void OnDestroy()
         {
-            if(_levelEventBridge.OnEnemyDestroyed != null)
-                _levelEventBridge.OnEnemyDestroyed.Invoke(GetComponent<EnemyBase>());
+            if(LevelEventBridge.OnEnemyDestroyed != null)
+                LevelEventBridge.OnEnemyDestroyed.Invoke(GetComponent<EnemyBase>());
         }
 
         private void OnDisable()
@@ -31,7 +27,7 @@ namespace Characters.Enemy
         IEnumerator NotifyEnemyManger()
         {
             yield return new WaitForSeconds(2f);
-            _levelEventBridge.OnEnemyJoined.Invoke(GetComponent<EnemyBase>());
+            LevelEventBridge.OnEnemyJoined.Invoke(GetComponent<EnemyBase>());
 
         }
     }

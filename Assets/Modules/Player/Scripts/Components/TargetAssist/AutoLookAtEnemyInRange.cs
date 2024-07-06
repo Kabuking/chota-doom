@@ -1,4 +1,4 @@
-﻿using Level.Scripts;
+﻿using Levels.L_Testing.Scripts;
 using Modules.Enemy;
 using UnityEngine;
 
@@ -8,8 +8,6 @@ namespace Modules.Player.Scripts.Components.TargetAssist
     {
         [SerializeField] private float maximumLookAtRange = 10;
         [SerializeField] private bool resetLookAtToForward = true;
-        [SerializeField] private LevelEventBridge _levelEventBridge;
-        
         
         [Header("Debug")]
         [SerializeField] private EnemyBase nearestEnemyTransform;
@@ -21,13 +19,13 @@ namespace Modules.Player.Scripts.Components.TargetAssist
 
         private void OnEnable()
         {
-            _levelEventBridge.NoEnemiesLeftInGame += OnAllEnemiesGone;
+            LevelEventBridge.NoEnemiesLeftInGame += OnAllEnemiesGone;
 
         }
 
         private void OnDisable()
         {
-            _levelEventBridge.NoEnemiesLeftInGame -= OnAllEnemiesGone;
+            LevelEventBridge.NoEnemiesLeftInGame -= OnAllEnemiesGone;
         }
 
         void OnAllEnemiesGone()

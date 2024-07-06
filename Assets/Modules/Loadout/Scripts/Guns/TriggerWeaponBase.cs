@@ -8,6 +8,8 @@ namespace Modules.Loadout.Scripts.Guns
 {
     public class TriggerWeaponBase: ItemBase
     {
+        [SerializeField] private BulletBase _bulletPrefab;
+        [SerializeField] private float bulletSpeed = 5;
         [Header("Gun Properties")]
         [SerializeField] protected EnumAllItemType.WeaponTriggerType _weaponTriggerType;
         [SerializeField] protected EnumAllItemType.AmmoType ammoType;
@@ -100,6 +102,14 @@ namespace Modules.Loadout.Scripts.Guns
                     ShootingSystem.Play();
                     Vector3 direction = GetDirection();
 
+                    if (_bulletPrefab != null)
+                    {
+                        var bulletSpawned = Instantiate(_bulletPrefab);
+                        bulletSpawned.SetBulletVelocity(bulletSpeed, BulletSpawnPoint);
+                    }
+
+
+
                     if (Physics.Raycast(BulletSpawnPoint.position, direction, out RaycastHit hit, bulletRange, Mask))
                     {
                         if (spawnTrailOnShootHit)
@@ -123,11 +133,16 @@ namespace Modules.Loadout.Scripts.Guns
                     // this has been updated to fix a commonly reported problem that you cannot fire if you would not hit anything
                     else
                     {
-                        TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
-                        
-                        StartCoroutine(SpawnTrail(trail, BulletSpawnPoint.position + GetDirection() * bulletRange, Vector3.zero,
-                            false));
-                        
+                        if (spawnTrailOnShootHit)
+                        {
+                            TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position,
+                                Quaternion.identity);
+
+                            StartCoroutine(SpawnTrail(trail, BulletSpawnPoint.position + GetDirection() * bulletRange,
+                                Vector3.zero,
+                                false));
+                        }
+
                         lastShootTime = Time.time;
                         
                         // DebugX.LogWithColorCyan("SHoot did not got hit");

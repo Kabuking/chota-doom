@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Characters.Player.Global;
-using Level.Scripts;
+using Levels.L_Testing.Scripts;
 using Modules.Enemy;
 using Modules.Player.Scripts.ComponentEventBus;
 using Modules.Player.Scripts.InputSystem;
@@ -36,7 +36,6 @@ namespace Modules.Player.Scripts.Components.TargetAssist
 
         // [SerializeField] private TargetSwitchTypeForButtons targetSwitchTypeForButtons;
         [SerializeField] private float maximumLookAtRange = 10;
-        [SerializeField] private LevelEventBridge _levelEventBridge;
         [SerializeField] private PlayerComponentEventBus _playerComponentEventBus;
         [SerializeField] private List<EnemyBase> enemiesInRange = new List<EnemyBase>();
         private PlayerInputMapping _playerInputMapping;
@@ -59,15 +58,15 @@ namespace Modules.Player.Scripts.Components.TargetAssist
 
         private void OnEnable()
         {
-            _levelEventBridge.NoEnemiesLeftInGame += OnAllEnemiesGone;
-            _levelEventBridge.OnEnemyDestroyed += OnEnemyRemoved;
+            LevelEventBridge.NoEnemiesLeftInGame += OnAllEnemiesGone;
+            LevelEventBridge.OnEnemyDestroyed += OnEnemyRemoved;
             _playerComponentEventBus.DoPerformTargetSwitchOnButtonPressed += TargetSwitch;
         }
 
         private void OnDisable()
         {
-            _levelEventBridge.NoEnemiesLeftInGame -= OnAllEnemiesGone;
-            _levelEventBridge.OnEnemyDestroyed -= OnEnemyRemoved;
+            LevelEventBridge.NoEnemiesLeftInGame -= OnAllEnemiesGone;
+            LevelEventBridge.OnEnemyDestroyed -= OnEnemyRemoved;
             _playerComponentEventBus.DoPerformTargetSwitchOnButtonPressed -= TargetSwitch;
         }
 
@@ -184,7 +183,8 @@ namespace Modules.Player.Scripts.Components.TargetAssist
                 // Reset rotation to zero (straight ahead)
                 //TODO : orient to movement ignore
                 // transform.rotation = Quaternion.identity;
-                _characterMovement.SetEnemyTargetLock(null);
+                // _characterMovement.SetEnemyTargetLock(null);
+                ResetLookAtToForward();
             }
         }
 
@@ -328,7 +328,9 @@ namespace Modules.Player.Scripts.Components.TargetAssist
         /// <param name="direction"></param>
         private void SwitchTargetLR(float direction)
         {
-            DebugX.LogWithColorCyan("LR Target switch type " + direction);
+            // DebugX.LogWithColorCyan("LR Target switch type " + direction);
+            
+            //For first time
             if (currentTargetEnemy == null)
             {
                 currentTargetEnemy = GetNearestEnemy();
@@ -353,11 +355,16 @@ namespace Modules.Player.Scripts.Components.TargetAssist
             {
                 if (IsTargetInDirection(currentTargetEnemy.transform, enemy.transform, direction))
                 {
-                    Debug.Log("Found next target: " + enemy.name);
+                    // Debug.Log("Found next target: " + enemy.name);
                     // currentTargetEnemy.RevertMaterial(); // Revert the material of the previous target
                     SetCurrentTargetLockedEnemy(enemy);
                     // LockOnTarget(currentTargetEnemy);
                     return;
+                }
+                else
+                {
+                    // Debug.Log("No more target found in that direction " + enemy.name);
+
                 }
             }
         }
