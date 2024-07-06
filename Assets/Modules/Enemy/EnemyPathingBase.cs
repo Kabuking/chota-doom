@@ -37,7 +37,6 @@ public class EnemyPathingBase : MonoBehaviour
             SetNewRandomTarget();
         }
 
-        // Set a new target if the current one is reached
         if (Vector3.Distance(transform.position, nextLocation) < 0.1f)
         {
             SetNewRandomTarget();
@@ -47,7 +46,7 @@ public class EnemyPathingBase : MonoBehaviour
     void SetNewRandomTarget()
     {
         Vector3 randomPoint = Random.insideUnitSphere * wanderRadius;
-        randomPoint.y = initialHeight; // Keep the movement on the xz plane
+        randomPoint.y = initialHeight; 
 
         Vector3 cameraPosition = mainCamera.transform.position;
         Vector3 cameraForward = mainCamera.transform.forward;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Modules.CommonEventBus;
 using UnityEngine;
 
 public class SlowProjectile : MonoBehaviour
@@ -7,9 +8,11 @@ public class SlowProjectile : MonoBehaviour
     [Header("Instantiation things")]
     public GameObject projectilePrefab;
     public Transform muzzle;
+    public PlayerCoopEventBus playerInfoSC;
 
     [Header("Player transforms")]
-    public Transform playerTransform;
+    public Transform player_1_Transform;
+    public Transform player_2_Transform;
 
     [Header("Bullet stats")]
     public float timeBetweenBulllets;
@@ -19,15 +22,18 @@ public class SlowProjectile : MonoBehaviour
 
     [Header("Serialized for debugging")]
     [SerializeField] bool shooting = false;
+    [SerializeField] Transform targetTransform;
+
     void Start()
     {
         StartCoroutine(WeaponSystem());
+        StartCoroutine(TargetSwitch());
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(playerTransform);
+        transform.LookAt(targetTransform);
     }
 
     IEnumerator WeaponSystem()
@@ -39,7 +45,7 @@ public class SlowProjectile : MonoBehaviour
             {
                 GameObject projectile = Instantiate(projectilePrefab, muzzle.position, Quaternion.identity);
                 Destroy(projectile, 2);
-                Vector3 direction = (playerTransform.position - muzzle.position).normalized;
+                Vector3 direction = (targetTransform.position - muzzle.position).normalized;
                 projectile.GetComponent<Rigidbody>().velocity = direction * bulletSpeed;
 
                 yield return new WaitForSeconds(timeBetweenBulllets);
@@ -48,4 +54,15 @@ public class SlowProjectile : MonoBehaviour
             yield return new WaitForSeconds(cooldown);
         }
     }
+
+    IEnumerator TargetSwitch() { 
+        while (true)
+        {
+            targetTransform = player_1_Transform;
+            yield return new WaitForSeconds(2);
+            targetTransform = player_2_Transform;
+            yield return new WaitForSeconds(2);
+        }
+    }
+
 }

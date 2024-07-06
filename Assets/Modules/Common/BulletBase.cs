@@ -5,10 +5,10 @@ using UnityEngine;
 public class BulletBase : MonoBehaviour
 {
     [Header("Bullet stats")]
-    [SerializeField] float damage;
+    public float damage;
 
     [Header("Bullet type")]
-    [SerializeField] DamageType damageType;
+    DamageType damageType;
 
     public enum DamageType { 
         Normal,
