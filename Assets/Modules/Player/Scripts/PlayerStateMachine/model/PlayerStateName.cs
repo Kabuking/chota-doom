@@ -7,11 +7,14 @@ namespace Modules.Player.Scripts.PlayerStateMachine.model
 {
     public enum PlayerStateName
     {
+        AbilityPerforming,
         Locomotion_NotAiming,
         Evade,
+        Hurt,
         
         Locomotion_Aiming,
         IDLE_JOGGING_SPRINTING,
+        Crouch,
         CombatIdle,
         Jogging,
         Sprint,
@@ -51,24 +54,6 @@ namespace Modules.Player.Scripts.PlayerStateMachine.model
         GettingHurt
     }
 
-    public abstract class StateDependentBehaviourMap: MonoBehaviour
-    {
-        public Dictionary<PlayerStateName, UnityAction> behaviourMap = new Dictionary<PlayerStateName, UnityAction>();
-        protected void InitBehaviourMap()
-        {
-            behaviourMap.Add(PlayerStateName.CombatIdle, () => OnCombatIdleAiming());
-            behaviourMap.Add(PlayerStateName.PaceControl, () => OnCombatIdleAiming());
-            behaviourMap.Add(PlayerStateName.Dash, () => OnCombatIdleNotAiming());
-            behaviourMap.Add(PlayerStateName.Jogging, () => OnRun());
-            behaviourMap.Add(PlayerStateName.Sprint, () => OnSprint());
-        }
-
-        protected abstract void OnCombatIdleAiming();
-        protected abstract void OnCombatIdleNotAiming();
-        protected abstract void OnRun();
-        protected abstract void OnSprint();
-    }
-    
     [Serializable]
     public class PlayerAnimationData
     {

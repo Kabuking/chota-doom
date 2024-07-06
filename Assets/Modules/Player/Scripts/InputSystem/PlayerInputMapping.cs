@@ -1,4 +1,4 @@
-﻿using Characters.Player.Global;
+﻿using Modules.Common.Abilities.Base.model;
 using Modules.Player.Scripts.Components.TargetAssist;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,9 +19,6 @@ namespace Modules.Player.Scripts.InputSystem
         public GameInput gameplayInput;
         protected PlayerInput playerInput;
         
-        public UnityAction AimingEventPerformed = delegate {  };
-        public UnityAction AimingEventCanceled = delegate {  };
-        
         public UnityAction ActiveItemUseEventPerformed = delegate {  };
         public UnityAction ActiveItemUseEventCanceled = delegate {  };
         public UnityAction<int> ItemSwitchSlotPerformed = delegate {  };
@@ -34,23 +31,23 @@ namespace Modules.Player.Scripts.InputSystem
         public UnityAction TargetSwitchRSFlickEvent = delegate {  };
 
         // public UnityAction WeaponSwitchEvent = delegate {  };
-        public UnityAction SprintPerformingEvent = delegate {  };
-        public UnityAction SprintCanceledEvent = delegate {  };
         public UnityAction ReloadGunPerformednEvent = delegate {  };
         public UnityAction ReloadGunCanceledEvent = delegate {  };
-        public UnityAction PaceControlPerformEvent = delegate {  };
-        public UnityAction PaceControlCanceledEvent = delegate {  };
-        public UnityAction EvadeControlPerformEvent = delegate {  };
-        public UnityAction EvadeControlCanceledEvent = delegate {  };
+
+        public UnityAction CrouchPerformedEvent = delegate {  };
+        public UnityAction CrouchCanceledEvent = delegate {  };
+
+        public UnityAction<AbilityTriggeredInputType> AbilityTriggerEventPerformed = delegate {  };
+        
+        
+        //Testing only
+        public UnityAction<Vector2> TestTakeSelfDamage = delegate {  };
 
 
         public Vector2 rollDirection = Vector2.zero;
         [Header("Move Input LS")]
-        // private InputAction _moveInputAction;
         public Vector2 lastIncomingMovementVector;
         public Vector2 incomingMovementVector;
-        // public float incomingHorizontal;
-        // public float incomingVertical;
 
         [Header("Target Direction RSFlick")] 
         public Vector2 lastRsFlickDirection;
@@ -65,9 +62,6 @@ namespace Modules.Player.Scripts.InputSystem
         [Header("Item Switching")] 
         [SerializeField] public int lastItemSwitchDirection = 0;
         [SerializeField] public int lastItemSwitchSlot = 0;
-        
-        // public float incomingHorizontalLookAround;
-        // public float incomingVerticalLookAround;
 
         private InputAction _movementInputAction_IA;
         private InputAction _itemUseInputAction_IA;
@@ -75,8 +69,10 @@ namespace Modules.Player.Scripts.InputSystem
         private InputAction _itemSwitchLRInputAction_IA;
         private InputAction _itemPickup_IA;
         private InputAction _itemDrop_IA;
-        private InputAction _evadeInputAction_IA;
+        // private InputAction _evadeInputAction_IA;
         private InputAction _lastTargetSwitchRSFlick_IA;
+        private InputAction _crouch_IA;
+
 
         private InputActionMap _targetSwitchSingleButton_IAM;
         private InputAction _targetSwitchButton_IA;
@@ -84,26 +80,29 @@ namespace Modules.Player.Scripts.InputSystem
         private InputActionMap _targetSwitchLeftRight_IAM;
         private InputAction _targetSwitchLeftRight_IA;
         
-        
-        // private InputAction _shootingGunOneInputAction;
-        // private InputAction _shootingGunTwoInputAction;
-        /*private InputAction _weaponSwitchInputAction;
-        
-        private InputAction _reloadGunInputAction;
-
-        private InputAction _sprintInputAction;
-        private InputAction _paceControlInputAction;
-        private InputAction _dashInputAction;*/
+        //Abilities
+        private InputAction Ability1_IA;
+        private InputAction Ability2_IA;
+        private InputAction Ability3_IA;
+        private InputAction Ability4_IA;
+        private InputAction Ability5_IA;
         
         public bool sprintPerforming = false;
         public bool paceControlPerforming = false;
+        public bool crouchPerforming = false;
+
         public bool itemUsePerforming = false;
-        public bool performEvade = false;
         public bool performReload = false;
-        
-        public Plane playerPlane;
 
         private bool awakeFinished = false;
+
+        //Testing
+        private InputAction _selfDamage_IA;
+
+
+        [Header("Abilities")]
+        public AbilityTriggeredInputType abilityTriggeredInputType = AbilityTriggeredInputType.None;
+
         
         public enum PlayerControlScheme
         {
@@ -116,31 +115,26 @@ namespace Modules.Player.Scripts.InputSystem
             
             playerInput = GetComponent<PlayerInput>();
             
-            // playerInput.actions.
-            // gameplayInput = new GameInput();
-            // _lookAroundInputAction = playerInput.currentActionMap.FindAction(InputActionNames.LookAround);
             _movementInputAction_IA = playerInput.currentActionMap.FindAction(InputActionNames.Movement);
             _itemUseInputAction_IA = playerInput.currentActionMap.FindAction(InputActionNames.ItemUse);
             _itemSwitchInputAction_IA  = playerInput.currentActionMap.FindAction(InputActionNames.ItemSwitch);
             _itemSwitchLRInputAction_IA  = playerInput.currentActionMap.FindAction(InputActionNames.ItemSwitchLR);
-            _evadeInputAction_IA = playerInput.currentActionMap.FindAction(InputActionNames.Evade);
             _lastTargetSwitchRSFlick_IA =  playerInput.currentActionMap.FindAction(InputActionNames.TargetSwitchRSFlick);
             _itemPickup_IA =  playerInput.currentActionMap.FindAction(InputActionNames.ItemPickup);
             _itemDrop_IA =  playerInput.currentActionMap.FindAction(InputActionNames.ItemDrop);
-            
-            // _targetSwitchSingleButton_IAM
+            _crouch_IA = playerInput.currentActionMap.FindAction(InputActionNames.Crouch);
             _targetSwitchButton_IA = playerInput.currentActionMap.FindAction(InputActionNames.TargetSwitchButton);
             _targetSwitchLeftRight_IA = playerInput.currentActionMap.FindAction(InputActionNames.TargetSwitchButtonLR);
             
-            // _shootingGunOneInputAction = playerInput.currentActionMap.FindAction(InputActionNames.ActiveItemUse);
-            // _reloadGunInputAction = playerInput.currentActionMap.FindAction(InputActionNames.ReloadGun);
-            // _shootingGunTwoInputAction = playerInput.currentActionMap.FindAction(InputActionNames.WeaponTwo);
-            // _weaponSwitchInputAction = playerInput.currentActionMap.FindAction(InputActionNames.WeaponSwitch);
-            // _sprintInputAction = playerInput.currentActionMap.FindAction(InputActionNames.Sprint);
-            // _paceControlInputAction = playerInput.currentActionMap.FindAction(InputActionNames.PaceControl);
-            // _dashInputAction = playerInput.currentActionMap.FindAction(InputActionNames.Dash);
-
-            playerPlane = new Plane(Vector3.up, transform.position);
+            
+            Ability1_IA = playerInput.currentActionMap.FindAction(InputActionNames.Ability1);
+            Ability2_IA = playerInput.currentActionMap.FindAction(InputActionNames.Ability2);
+            Ability3_IA = playerInput.currentActionMap.FindAction(InputActionNames.Ability3);
+            Ability4_IA = playerInput.currentActionMap.FindAction(InputActionNames.Ability4);
+            Ability5_IA = playerInput.currentActionMap.FindAction(InputActionNames.Ability5);
+            
+            
+            _selfDamage_IA = playerInput.currentActionMap.FindAction(InputActionNames.TestApplyDamage);
             
             SetTargetSwitchButtonType(buttonTargetSwitchType);
 
@@ -150,8 +144,6 @@ namespace Modules.Player.Scripts.InputSystem
 
         private void OnEnable()
         {
-            // gameplayInput.Gameplay.LookAround.performed += OnLookAround;
-            // gameplayInput.Gameplay.LookAround.canceled += OnLookAround;
             _movementInputAction_IA.performed += OnRun;
             _movementInputAction_IA.canceled += OnRun;
             _itemUseInputAction_IA.performed += OnActiveItemUsePerformed;
@@ -160,46 +152,24 @@ namespace Modules.Player.Scripts.InputSystem
             _itemSwitchLRInputAction_IA.performed += OnItemSwitchLeftRightPerform;
             _itemPickup_IA.performed += OnItemPickupIAPerform;
             _itemDrop_IA.performed += OnItemDropIAPerform;
-            _evadeInputAction_IA.performed += OnEvadeControlPerformed;
-            _evadeInputAction_IA.canceled += OnEvadeControlCanceled;
             _targetSwitchButton_IA.performed += OnTargetSwitchButtonIaPressed;
             _lastTargetSwitchRSFlick_IA.performed += OnTargetSwitchRSFlicked;
             _targetSwitchLeftRight_IA.performed += OnTargetSwitchLeftRightIaPressed;
-            // _shootingGunOneInputAction.performed += OnActiveItemUseInput;
-            // _shootingGunOneInputAction.canceled += OnWeaponOneInputCanceled;
-            // _shootingGunTwoInputAction.performed += OnWeaponTwoInput;
-            /*_weaponSwitchInputAction.performed += OnWeaponSwitchInput;
-            _sprintInputAction.performed += OnSprintInputPerforming;
-            _sprintInputAction.canceled += OnSprintInputCanceled;
-            _reloadGunInputAction.performed += OnReloadGunPerformed;
-            _reloadGunInputAction.canceled += OnReloadGunCanceled;
-            _paceControlInputAction.performed += OnPaceControlPerformed;
-            _paceControlInputAction.canceled += OnPaceControlCanceled;*/
-            // _dashInputAction.performed += OnDashControlPerformed;
-            // _dashInputAction.canceled += OnDashControlCanceled;
 
-            /*
-            gameplayInput.Gameplay.Movement.performed += OnRun;
-            gameplayInput.Gameplay.Movement.canceled += OnRun;
-            
-            gameplayInput.Gameplay.Evade.performed += OnEvadeControlPerformed;
-            gameplayInput.Gameplay.Evade.canceled += OnEvadeControlCanceled;
+            _crouch_IA.performed += OnCrouchPerformed;
+            _crouch_IA.canceled += OnCrouchReleased;
 
-            gameplayInput.Gameplay.ActiveItemUse.performed += OnActiveItemUsePerformed;
-            gameplayInput.Gameplay.ActiveItemUse.canceled += OnActiveItemUseCanceled;
+            Ability1_IA.performed += OnAbility1Performed;
+            Ability2_IA.performed += OnAbility2Performed;
+            Ability3_IA.performed += OnAbility3Performed;
+            Ability4_IA.performed += OnAbility4Performed;
+            Ability5_IA.performed += OnAbility5Performed;
 
-            gameplayInput.Gameplay.Aim.performed += OnAimingPerformed;
-            gameplayInput.Gameplay.Aim.canceled += OnAimingCanceled;
-            
-            gameplayInput.Enable();
-            */
-
+            _selfDamage_IA.performed += OnDamageSelf;
         }
 
         private void OnDisable()
         {
-            // gameplayInput.Gameplay.LookAround.performed-= OnLookAround;
-            // gameplayInput.Gameplay.LookAround.canceled -= OnLookAround;
             _movementInputAction_IA.performed -= OnRun;
             _movementInputAction_IA.canceled -= OnRun;
             _itemUseInputAction_IA.performed -= OnActiveItemUsePerformed;
@@ -208,61 +178,26 @@ namespace Modules.Player.Scripts.InputSystem
             _itemSwitchLRInputAction_IA.performed -= OnItemSwitchLeftRightPerform;
             _itemPickup_IA.performed -= OnItemPickupIAPerform;
             _itemDrop_IA.performed -= OnItemDropIAPerform;
-            _evadeInputAction_IA.performed -= OnEvadeControlPerformed;
-            _evadeInputAction_IA.canceled -= OnEvadeControlCanceled;
             _targetSwitchButton_IA.performed -= OnTargetSwitchButtonIaPressed;
             _lastTargetSwitchRSFlick_IA.performed -= OnTargetSwitchRSFlicked;
             _targetSwitchLeftRight_IA.performed -= OnTargetSwitchLeftRightIaPressed;
             
+            _crouch_IA.performed -= OnCrouchPerformed;
+            _crouch_IA.canceled -= OnCrouchReleased;
+
+            Ability1_IA.performed -= OnAbility1Performed;
+            Ability2_IA.performed -= OnAbility2Performed;
+            Ability3_IA.performed -= OnAbility3Performed;
+            Ability4_IA.performed -= OnAbility4Performed;
+            Ability5_IA.performed -= OnAbility5Performed;
             
-            // _shootingGunOneInputAction.performed -= OnActiveItemUseInput;
-            // _shootingGunTwoInputAction.performed -= OnWeaponTwoInput;
-            /*_weaponSwitchInputAction.performed -= OnWeaponSwitchInput;
-            _sprintInputAction.performed -= OnSprintInputPerforming;
-            _sprintInputAction.canceled -= OnSprintInputCanceled;
-            _reloadGunInputAction.performed -= OnReloadGunPerformed;
-            _paceControlInputAction.performed -= OnPaceControlPerformed;
-            _paceControlInputAction.canceled -= OnPaceControlCanceled;
-            _dashInputAction.performed -= OnDashControlPerformed;
-            _dashInputAction.canceled -= OnDashControlCanceled;*/
+            _selfDamage_IA.performed -= OnDamageSelf;
             
-            // gameplayInput.Gameplay.Dash.performed -= OnDashControlPerformed;
-            // gameplayInput.Gameplay.Dash.canceled -= OnDashControlCanceled;
-            
-            /*gameplayInput.Gameplay.Movement.performed -= OnRun;
-            gameplayInput.Gameplay.Movement.canceled -= OnRun;
-            
-            gameplayInput.Gameplay.ActiveItemUse.performed -= OnActiveItemUsePerformed;
-            gameplayInput.Gameplay.ActiveItemUse.canceled -= OnActiveItemUseCanceled;
-            
-            
-            gameplayInput.Gameplay.Evade.performed -= OnEvadeControlPerformed;
-            gameplayInput.Gameplay.Evade.canceled -= OnEvadeControlCanceled;
-            
-            gameplayInput.Gameplay.Aim.performed -= OnAimingPerformed;
-            gameplayInput.Gameplay.Aim.canceled -= OnAimingCanceled;
-            
-            gameplayInput.Disable();*/
         }
 
         private void Update()
         {
-            // incomingMovementVector = gameplayInput.Gameplay.Movement.ReadValue<Vector2>();
-            /*incomingMovementVector = playerInput.currentActionMap.FindAction(InputActionNames.Movement).ReadValue<Vector2>();
-            if (incomingMovementVector != Vector2.zero)
-            {
-                lastIncomingMovementVector = incomingMovementVector;
-            }*/
-
-            // currentIncomingLookAround = gameplayInput.Gameplay.LookAround.ReadValue<Vector2>();
             
-            /*if ((currentIncomingLookAround.x != 0 || currentIncomingLookAround.y != 0))
-                lastIncomingLookAround = currentIncomingLookAround;
-            
-            
-            playerPlane.distance = -Vector3.Dot(playerPlane.normal, transform.position);*/
-            
-
         }
 
         
@@ -298,15 +233,9 @@ namespace Modules.Player.Scripts.InputSystem
             else
                 currentActiveControlScheme = PlayerControlScheme.KBM;
         }
-
-        /*void OnActiveItemUse(InputAction.CallbackContext context)
-        {
-            if (context.performed) itemUsePerforming = true;
-            else itemUsePerforming = false;
-        }*/
+        
         public void OnRun(InputAction.CallbackContext context)
         {
-            // DebugX.LogWithColorYellow("--- "+context.phase);
             if (context.phase == InputActionPhase.Performed)
             {
                 incomingMovementVector = context.ReadValue<Vector2>();
@@ -320,12 +249,9 @@ namespace Modules.Player.Scripts.InputSystem
                 incomingMovementVector = Vector2.zero;
 
             }
-            // incomingHorizontal = incomingMovementVector.x;
-            // incomingVertical = incomingMovementVector.y;
         }
 
-        void OnAimingPerformed(InputAction.CallbackContext context) { IsAiming = true; AimingEventPerformed.Invoke(); }
-        void OnAimingCanceled(InputAction.CallbackContext context) { IsAiming = false; AimingEventCanceled.Invoke(); }
+
         
         void OnActiveItemUsePerformed(InputAction.CallbackContext context) { itemUsePerforming = true; ActiveItemUseEventPerformed.Invoke(); }
         void OnActiveItemUseCanceled(InputAction.CallbackContext context) { itemUsePerforming = false; ActiveItemUseEventCanceled.Invoke(); }
@@ -337,24 +263,12 @@ namespace Modules.Player.Scripts.InputSystem
 
         void OnTargetSwitchButtonIaPressed(InputAction.CallbackContext context)
         {
-            /*if(buttonTargetSwitchType == ManualSwitchAtEnemyInRange.TargetSwitchTypeForButtons.SecondNearestTarget 
-               || buttonTargetSwitchType == ManualSwitchAtEnemyInRange.TargetSwitchTypeForButtons.CurrentLockedToNextTargetNearest)
-                TargetSwitchButtonPressedEvent.Invoke();*/
-            
             TargetSwitchSingledButtonPressedEvent.Invoke();
-            // DebugX.LogWithColorCyan("Single button t switch pressed");
         }
 
         void OnTargetSwitchLeftRightIaPressed(InputAction.CallbackContext context)
         {
-            /*if (buttonTargetSwitchType == ManualSwitchAtEnemyInRange.TargetSwitchTypeForButtons.LeftRightSwitch)
-            {
-                lastTargetSwitchDirectionLR = context.ReadValue<float>();
-                DebugX.LogWithColorCyan("Input LR Switch");
-                TargetSwitchLRPressedEvent.Invoke();
-            }*/
             lastTargetSwitchDirectionLR = context.ReadValue<float>();
-            // DebugX.LogWithColorCyan("Input LR Switch");
             TargetSwitchLRPressedEvent.Invoke();
         }
         void OnTargetSwitchRSFlicked(InputAction.CallbackContext context)
@@ -386,32 +300,42 @@ namespace Modules.Player.Scripts.InputSystem
             }
             
         }
-        // void OnWeaponTwoInput(InputAction.CallbackContext context) {WeaponTwoShootEvent.Invoke();}
-        // void OnWeaponSwitchInput(InputAction.CallbackContext context) {WeaponSwitchEvent.Invoke();}
-        void OnSprintInputPerforming(InputAction.CallbackContext context) { sprintPerforming = true; SprintPerformingEvent.Invoke(); }
-        void OnSprintInputCanceled(InputAction.CallbackContext context) { sprintPerforming = false; SprintCanceledEvent.Invoke(); }
+
         void OnReloadGunPerformed(InputAction.CallbackContext context) { performReload = true; ReloadGunPerformednEvent.Invoke(); }
         void OnReloadGunCanceled(InputAction.CallbackContext context) { performReload = false; ReloadGunCanceledEvent.Invoke(); }
-        void OnPaceControlPerformed(InputAction.CallbackContext context) { paceControlPerforming = true; PaceControlPerformEvent.Invoke(); }
-        void OnPaceControlCanceled(InputAction.CallbackContext context) { paceControlPerforming = false; PaceControlCanceledEvent.Invoke(); }
+        void OnCrouchPerformed(InputAction.CallbackContext context){ crouchPerforming = true; CrouchPerformedEvent.Invoke(); }
+        void OnCrouchReleased(InputAction.CallbackContext context){ crouchPerforming = false; CrouchCanceledEvent.Invoke(); }
 
+        void OnAbility1Performed(InputAction.CallbackContext context) { abilityTriggeredInputType = AbilityTriggeredInputType.Ability1; AbilityTriggerEventPerformed.Invoke(AbilityTriggeredInputType.Ability1); }
+        void OnAbility2Performed(InputAction.CallbackContext context) { abilityTriggeredInputType = AbilityTriggeredInputType.Ability2; AbilityTriggerEventPerformed.Invoke(AbilityTriggeredInputType.Ability2); }
+        void OnAbility3Performed(InputAction.CallbackContext context) { abilityTriggeredInputType = AbilityTriggeredInputType.Ability3; AbilityTriggerEventPerformed.Invoke(AbilityTriggeredInputType.Ability3); }
+        void OnAbility4Performed(InputAction.CallbackContext context) { abilityTriggeredInputType = AbilityTriggeredInputType.Ability4; AbilityTriggerEventPerformed.Invoke(AbilityTriggeredInputType.Ability4); }
+        void OnAbility5Performed(InputAction.CallbackContext context) { abilityTriggeredInputType = AbilityTriggeredInputType.Ability5; AbilityTriggerEventPerformed.Invoke(AbilityTriggeredInputType.Ability5); }
 
-        void OnEvadeControlPerformed(InputAction.CallbackContext context)
+        void OnDamageSelf(InputAction.CallbackContext context)
         {
-            performEvade = true; 
-            EvadeControlPerformEvent.Invoke();
+            TestTakeSelfDamage.Invoke(Random.insideUnitCircle.normalized);
         }
-        void OnEvadeControlCanceled(InputAction.CallbackContext context) { performEvade = false; EvadeControlCanceledEvent.Invoke(); }
-
-
+        
         //For Live Debugging
-        private void OnValidate()
+        /*private void OnValidate()
         {
             if (awakeFinished)
             {
                 SetTargetSwitchButtonType(buttonTargetSwitchType);
                 DebugX.LogWithColorYellow("Validated Target switch on inspector change");
             }
-        }
+            
+            List<string> name = new List<string>();
+      
+            name.Add("Apple");
+            name.Add("Manog");
+            name.Add("Guava");
+            
+            foreach (var sname in name)
+            {
+                Debug.Log($"{sname} in {name.IndexOf(sname)}");
+            }
+        }*/
     }
 }

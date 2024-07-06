@@ -29,11 +29,6 @@ namespace Modules.Player.Scripts.Components
             _playerInputMapping = GetComponent<PlayerInputMapping>();
         }
 
-        private void OnEnable()
-        {
-            // playerComponentEventBus.OnFoundEnemy += OnFoundEnemyCharacter;
-        }
-
         public void ApplyXZVelocity(float speed)
         {
             _characterController.SimpleMove(new Vector3(
@@ -57,6 +52,12 @@ namespace Modules.Player.Scripts.Components
             }
         }
 
+        public void ApplyXZVelocityWithoutMovement(float speed, Vector2 direction)
+        {
+            _characterController.SimpleMove(new Vector3(direction.x, 0, direction.y) * speed);
+        }
+        
+        
         /*
          * TODO: Confirmed, where to keep this function
          */
@@ -119,8 +120,11 @@ namespace Modules.Player.Scripts.Components
         public void SetOrientToRotation(bool orientB) => orientRotationToMovement = orientB;
         public void SetRotationRate(float rotationRateF) => rotationRate = rotationRateF;
         public void SetEnemyTargetLock(Transform enemyT) => _foundEnemyTarget = enemyT;
-        public void ApplyEvade()=> ApplyXZVelocity(_playerStats.evadeVelocity, GetEvadeDirection());
+        // public void ApplyEvade()=> ApplyXZVelocity(_playerStats.evadeVelocity, GetEvadeDirection());
 
+        public void ApplyEvade(float evadeVelocity)=> ApplyXZVelocity(evadeVelocity, GetEvadeDirection());
+
+        
         public enum EvadeType
         {
             FollowMovementDirection,
