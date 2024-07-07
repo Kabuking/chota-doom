@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Modules.CommonEventBus;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SlowProjectile : MonoBehaviour
 {
@@ -24,10 +25,18 @@ public class SlowProjectile : MonoBehaviour
     [SerializeField] bool shooting = false;
     [SerializeField] Transform targetTransform;
 
-    void Start()
+
+    private void OnEnable()
     {
-        StartCoroutine(WeaponSystem());
-        StartCoroutine(TargetSwitch());
+        playerInfoSC.PlayerJoinedGameEvent += OnPlayerJoined;
+        playerInfoSC.PlayerLeftGameEvent += OnPlayerLeft;
+
+    }
+
+    private void OnDisable()
+    {
+        playerInfoSC.PlayerJoinedGameEvent -= OnPlayerJoined;
+        playerInfoSC.PlayerLeftGameEvent -= OnPlayerLeft;
     }
 
     // Update is called once per frame
@@ -36,15 +45,52 @@ public class SlowProjectile : MonoBehaviour
         transform.LookAt(targetTransform);
     }
 
+
+    void OnPlayerJoined(PlayerInput player)
+    {
+        if(player.playerIndex == 0)
+        {
+            player_1_Transform = player.transform;
+        }
+        else if (player.playerIndex == 1)
+        {
+            player_2_Transform = player.transform;
+        }
+
+
+        //Carefull with multiple process when player joins again after dead
+        if(player_1_Transform != null && player_2_Transform != null)
+        {
+            Debug.Log("Both players joined");
+            StartCoroutine(TargetSwitch());
+            StartCoroutine(WeaponSystem());
+        }
+    }
+
+    void OnPlayerLeft(PlayerInput player)
+    {
+        if (player.playerIndex == 0)
+        {
+            player_1_Transform = null;
+        }
+        else if (player.playerIndex == 1)
+        {
+            player_2_Transform = null;
+        }
+
+        //on left any one
+    }
+
+
     IEnumerator WeaponSystem()
     {
+        Debug.Log("Starting weapon system");
         while (true)
         {
             shooting = true;
             for(int i = 0; i < numberOfBullets; i++)
             {
                 GameObject projectile = Instantiate(projectilePrefab, muzzle.position, Quaternion.identity);
-                Destroy(projectile, 2);
                 Vector3 direction = (targetTransform.position - muzzle.position).normalized;
                 projectile.GetComponent<Rigidbody>().velocity = direction * bulletSpeed;
 
