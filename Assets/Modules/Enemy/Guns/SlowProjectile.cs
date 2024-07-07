@@ -23,7 +23,7 @@ public class SlowProjectile : MonoBehaviour
 
     [Header("Serialized for debugging")]
     [SerializeField] bool shooting = false;
-    [SerializeField] Transform targetTransform;
+    public Transform targetTransform;
 
 
     private void OnEnable()
@@ -81,7 +81,6 @@ public class SlowProjectile : MonoBehaviour
         //on left any one
     }
 
-
     IEnumerator WeaponSystem()
     {
         Debug.Log("Starting weapon system");
@@ -104,10 +103,19 @@ public class SlowProjectile : MonoBehaviour
     IEnumerator TargetSwitch() { 
         while (true)
         {
-            targetTransform = player_1_Transform;
-            yield return new WaitForSeconds(2);
-            targetTransform = player_2_Transform;
-            yield return new WaitForSeconds(2);
+            if(player_1_Transform != null) 
+            { 
+                targetTransform = player_1_Transform;
+                yield return new WaitForSeconds(2);
+            }
+            
+            if (player_2_Transform != null)
+            {
+                targetTransform = player_2_Transform;
+                yield return new WaitForSeconds(2);
+            }
+
+            yield return null;
         }
     }
 

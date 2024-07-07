@@ -8,6 +8,7 @@ public class EnemyPathingBase : MonoBehaviour
     public float wanderRadius = 10f; // Radius around the camera within which the object can wander
     public float cameraAvoidRange;
     public float moveSpeed = 2f; // Speed at which the object moves
+    public SlowProjectile GunScript;
 
     [Header("Serialized for debugging")]
     [SerializeField] float initialHeight;
@@ -24,6 +25,10 @@ public class EnemyPathingBase : MonoBehaviour
 
     void Update()
     {
+        if (GunScript.targetTransform != null) { 
+            transform.LookAt(GunScript.targetTransform.position);
+        }
+
         MoveTowardsTarget();
 
         Vector3 viewportPoint = mainCamera.WorldToViewportPoint(nextLocation);
