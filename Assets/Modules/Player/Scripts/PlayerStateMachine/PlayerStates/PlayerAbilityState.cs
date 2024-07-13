@@ -16,7 +16,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
        {
            base.OnEnter();
            _playerAbilityManager.AbilityApplyOnStart();
-           DebugX.LogWithColorYellow("Ability started "+_playerAbilityManager.GetAbilityToBeProcessed());
+           // DebugX.LogWithColorYellow("Ability started "+_playerAbilityManager.GetAbilityToBeProcessed());
        }
 
        public override void OnLogic()
@@ -32,7 +32,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
        {
            base.OnExit();
            _playerAbilityManager.AbilityApplyOnExit();
-           DebugX.LogWithColorYellow("Ability finished ");
+           // DebugX.LogWithColorYellow("Ability finished ");
        }
     }
 }

@@ -36,10 +36,7 @@ namespace Modules.Loadout.Scripts.Manager
             _mainCamera = Camera.main;
             _playerInput = GetComponent<PlayerInput>();
             _playerInputMapping = GetComponent<PlayerInputMapping>();
-        }
-
-        private void OnEnable()
-        {
+            
             _playerComponentEventBus.ItemDoPickUpProcess += ReceivePickUpInput;
             _playerComponentEventBus.ItemDropAttempt += ReceiveItemDropInput;
         }
