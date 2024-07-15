@@ -640,6 +640,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""4578e6c4-6504-45fc-b7fb-058eba8387cf"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""25f36838-9ccf-4a35-8dd5-ef1928d09ac2"",
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",

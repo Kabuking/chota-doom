@@ -129,6 +129,11 @@ namespace Modules.Loadout.Scripts.Guns
         //Currently only implement single shot and rapid fire
         void ApplyFire()
         {
+            if (hasCameraShake && _cinemachineImpulseSource != null)
+            {
+                _cinemachineImpulseSource.GenerateImpulse();
+            }
+            
             
             if (currentAmmoLeft < 1)
             {
@@ -139,6 +144,9 @@ namespace Modules.Loadout.Scripts.Guns
             }
             else
             {
+
+                
+                
                 // DebugX.LogWithColorYellow("applying fire");
                 gunState = EnumAllItemType.GunState.Firing;
                 
@@ -173,10 +181,7 @@ namespace Modules.Loadout.Scripts.Guns
                         BulletBase bulletSpawned = Instantiate(projectile, BulletSpawnPoint.position, BulletSpawnPoint.rotation);
                         bulletSpawned.SetVelocity(bulletSpeed, BulletSpawnPoint);
                         
-                        if (hasCameraShake && _cinemachineImpulseSource != null)
-                        {
-                            _cinemachineImpulseSource.GenerateImpulse();
-                        }
+
                     }
                     
                     

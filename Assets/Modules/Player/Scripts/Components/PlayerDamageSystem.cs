@@ -130,7 +130,7 @@ namespace Modules.Player.Scripts.Components
                 {
                     
                     BulletBase bulletBase = other.gameObject.GetComponent<BulletBase>();
-                    Vector3 bulletDirection = bulletBase.rbProjectile.velocity.normalized;
+                    // Vector3 bulletDirection = bulletBase.rbProjectile.velocity.normalized;
                     Vector3 bulletPosition = other.transform.position;
                     Vector3 damageDirection = (transform.position - bulletPosition).normalized;
                     // DebugX.LogWithColorCyan("Damage taken player "+damageDirection);
