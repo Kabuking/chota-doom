@@ -23,8 +23,9 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemyDamage")) // <- change to PlayerAttack after testing
+        if (other.CompareTag("PlayerDamage")) // <- change to PlayerAttack after testing
         {
+            Debug.Log("Enemy taking damage");
             TakeDamage(other.GetComponent<BulletBase>().damage);
             Stagger((other.GetComponent<Rigidbody>().velocity).normalized);
         }
@@ -40,7 +41,7 @@ public class EnemyHealth : MonoBehaviour
     }
 
     public void Stagger(Vector3 direction_of_impact) {
-        transform.position = transform.position + staggerAmount * direction_of_impact;     
+        bodyToStagger.position = bodyToStagger.position + staggerAmount * new Vector3(direction_of_impact.x, 0, direction_of_impact.z);     
     }
 
 }
