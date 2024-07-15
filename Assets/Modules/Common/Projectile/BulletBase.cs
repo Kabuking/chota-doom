@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Characters.Player.Global;
 using Modules.Common;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class BulletBase : MonoBehaviour
     public Rigidbody rbProjectile;
 
     public GameObject impactPrefab;
+
+    
     public enum DamageType { 
         Normal,
         Bleed,

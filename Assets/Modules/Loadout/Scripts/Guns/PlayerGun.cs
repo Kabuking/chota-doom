@@ -44,6 +44,9 @@ namespace Modules.Loadout.Scripts.Guns
         [SerializeField] private Transform BulletSpawnPoint;
         [SerializeField] private Transform MuzzleSpawnPoint;
 
+        [Header("Sound")] 
+        [SerializeField] private AudioSource _audioSourceGun;
+        [SerializeField] private AudioClip _audioClipGunShot;
 
         private EnumAllItemType.GunState gunState = EnumAllItemType.GunState.Carrying;
         
@@ -129,10 +132,7 @@ namespace Modules.Loadout.Scripts.Guns
         //Currently only implement single shot and rapid fire
         void ApplyFire()
         {
-            if (hasCameraShake && _cinemachineImpulseSource != null)
-            {
-                _cinemachineImpulseSource.GenerateImpulse();
-            }
+
             
             
             if (currentAmmoLeft < 1)
@@ -145,7 +145,12 @@ namespace Modules.Loadout.Scripts.Guns
             else
             {
 
+                _audioSourceGun.PlayOneShot(_audioClipGunShot);
                 
+                if (hasCameraShake && _cinemachineImpulseSource != null)
+                {
+                    _cinemachineImpulseSource.GenerateImpulse();
+                }
                 
                 // DebugX.LogWithColorYellow("applying fire");
                 gunState = EnumAllItemType.GunState.Firing;

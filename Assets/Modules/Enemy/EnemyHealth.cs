@@ -10,6 +10,9 @@ public class EnemyHealth : MonoBehaviour
     [Header("Serialized for debugging")]
     [SerializeField] float health;
 
+    [SerializeField] private List<AudioClip> bulletHit;
+    [SerializeField] private AudioSource _audioSource;
+    
     void Start()
     {
         
@@ -23,11 +26,15 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Enemy OnTriggerEnter damage "+other.tag);
+
         if (other.CompareTag("PlayerDamage")) // <- change to PlayerAttack after testing
         {
             Debug.Log("Enemy taking damage");
             TakeDamage(other.GetComponent<BulletBase>().damage);
             Stagger((other.GetComponent<Rigidbody>().velocity).normalized);
+
+            _audioSource.PlayOneShot(bulletHit[Random.Range(0,bulletHit.Count)]);
         }
     }
 
