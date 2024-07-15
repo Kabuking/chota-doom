@@ -20,7 +20,7 @@ namespace Modules.Player.Scripts.Testing
         IEnumerator ShootC()
         {
             yield return new WaitForSeconds(shootFrequency);
-            Instantiate(_bulletBase).SetBulletVelocity(bulletSpeed,spawnBulletPosition, bulletLifetime);
+            Instantiate(_bulletBase).SetVelocity(bulletSpeed,spawnBulletPosition, bulletLifetime);
             StartCoroutine(ShootC());
         }
         

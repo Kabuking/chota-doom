@@ -8,6 +8,7 @@
         Transition_To_Crouch,
         Transition_To_Ability,
         Transition_To_Hurt,
+        Transition_To_Dead,
         
         
         Transition_To_CombatIdle,
@@ -15,8 +16,8 @@
         Transition_To_Reload,
         Transition_To_Test,
         
-        Any_To_TakingDamage,
-        Any_To_Dying,
+        // Any_To_TakingDamage,
+        // Any_To_Dead,
         
         
         //TriggerActions

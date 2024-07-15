@@ -39,6 +39,10 @@ namespace Modules.Loadout.Scripts.Manager
             
             _playerComponentEventBus.ItemDoPickUpProcess += ReceivePickUpInput;
             _playerComponentEventBus.ItemDropAttempt += ReceiveItemDropInput;
+            
+            StartCoroutine(LoadOutInitialization(0));
+
+            
         }
 
         private void OnDisable()
@@ -47,25 +51,32 @@ namespace Modules.Loadout.Scripts.Manager
             _playerComponentEventBus.ItemDropAttempt -= ReceiveItemDropInput;
         }
 
+        /*
         private void Start()
         {
-            StartCoroutine(LoadOutInitialization());
+            StartCoroutine(LoadOutInitialization(loadOutInitializationDelay));
         }
+        */
 
         /*
          * Delay so that other components get notified
          * Delay to add a fade in affect of the UI entry instead of instant
          */
-        IEnumerator LoadOutInitialization()
+        IEnumerator LoadOutInitialization(float loadInitializationDelay)
         {
-            yield return new WaitForSeconds(loadOutInitializationDelay);
+            yield return new WaitForSeconds(loadInitializationDelay);
             
             itemRack = new ItemRack(this);
             itemRack.InitializeItemRack(maxNumberOfSlots, startingItems);
         }
-        
-        public void OnItemUse() { itemRack.ActiveItemSlot?.Item.OnItemUse(); }
-        public void OnItemUseStop() { itemRack.ActiveItemSlot?.Item.OnItemUseStop(); }
+
+        //TODO: Null check remove if possible
+        public void OnItemUse()
+        {
+            // Debug.Log("Item use call "+itemRack.ActiveItemSlot == null);
+            itemRack.ActiveItemSlot?.Item?.OnItemUse();
+        }
+        public void OnItemUseStop() { itemRack.ActiveItemSlot?.Item?.OnItemUseStop(); }
         public void ReceiveItemSwitchLeftRight() => itemRack.ReceiveItemSwitch();
         private void ReceivePickUpInput(ItemBase pickUpItemBase) { if (pickUpItemBase == null) return; itemRack.ReceiveItemPick(pickUpItemBase); }
         private void ReceiveItemDropInput() { itemRack.ReceiveItemDrop(); }

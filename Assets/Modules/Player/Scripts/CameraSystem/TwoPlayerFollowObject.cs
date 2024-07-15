@@ -32,6 +32,8 @@ namespace Modules.Player.Scripts.CameraSystem
         private void OnEnable()
         {
             playerCoopEventBus.PlayerJoinedGameEvent += SetCameraTarget;
+            // playerCoopEventBus.PlayerLeftGameEvent -= SetCameraTarget;
+
         }
 
         private void OnDisable()

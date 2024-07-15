@@ -1,4 +1,5 @@
-﻿using Modules.CommonEventBus;
+﻿using Characters.Player.Global;
+using Modules.CommonEventBus;
 using Modules.Loadout.Scripts.Item;
 using Modules.Loadout.Scripts.Manager;
 using Modules.Player.Scripts.Abilities.Base;
@@ -17,7 +18,7 @@ namespace Modules.Player.Scripts.Controller
     {
         public PlayerStats playerStats;
         private StateMachine<PlayerStateName, PlayerStateTransitionEvent> playerFSM;
-        [SerializeField] public PlayerStateName currentStateName { get; private set; }
+        [SerializeField] public PlayerStateName currentStateName;
         public bool enableTickOnStateLogic = true;
         
         //References
@@ -169,8 +170,19 @@ namespace Modules.Player.Scripts.Controller
                 playerHurtState
             );
             
+            
+            PlayerDeadState playerDeadState = new PlayerDeadState(playerFSM, this);
+            playerFSM.AddState(
+                PlayerStateName.Dead,
+                playerDeadState
+            );
+            
+            
             playerFSM.AddTriggerTransitionFromAny(PlayerStateTransitionEvent.Transition_To_Hurt, PlayerStateName.Hurt);
+            playerFSM.AddTriggerTransitionFromAny(PlayerStateTransitionEvent.Transition_To_Dead, PlayerStateName.Dead);
 
+            
+            
             playerFSM.AddTriggerTransitionFromAny(PlayerStateTransitionEvent.Transition_To_LocomotionNotAiming, PlayerStateName.Locomotion_NotAiming);
             playerFSM.AddTriggerTransitionFromAny(PlayerStateTransitionEvent.Transition_To_Evade, PlayerStateName.Evade);
             playerFSM.AddTriggerTransitionFromAny(PlayerStateTransitionEvent.Transition_To_Crouch, PlayerStateName.Crouch);
@@ -215,9 +227,15 @@ namespace Modules.Player.Scripts.Controller
         
         
         //External Trigger
-        public void TriggerTakeDamage(Vector2 damageDirection)
+        /*public void TriggerTakeDamage(Vector2 damageDirection)
         {
-            playerFSM.OnAction(PlayerStateTransitionEvent.Any_To_TakingDamage);
+            playerFSM.OnAction(PlayerStateTransitionEvent.Transition_To_Hurt);
+        }*/
+        
+        public void TriggerDead()
+        {
+            // DebugX.LogWithColorCyan("Transition dead");
+            playerFSM.TriggerLocally(PlayerStateTransitionEvent.Transition_To_Dead);
         }
     }
 }
