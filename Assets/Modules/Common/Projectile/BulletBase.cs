@@ -24,7 +24,7 @@ public class BulletBase : MonoBehaviour
         Shock
     }
 
-    private float selfDestroyAfterSeconds = 10f;
+    private float selfDestroyAfterSeconds = 2f;
     public float raycastBuffer = 1f; // Add a small buffer to the raycast
     private bool bulletActive = false;
     
