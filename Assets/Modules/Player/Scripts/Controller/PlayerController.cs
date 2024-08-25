@@ -24,12 +24,12 @@ namespace Modules.Player.Scripts.Controller
         //References
         [SerializeField] private PlayerCoopEventBus _playerCoopEventBus;
         
-        protected GameplayLoadoutOnPlayer _itemManager;
+        protected GameplayLoadout gameplayLoadout;
         PlayerInputMapping _playerInputMapping;
         private PlayerGameplayStatsState _playerGameplayStatsState;
         private PlayerComponentEventBus _playerComponentEventBus;
         private PlayerAbilityManager _playerAbilityManager;
-        private GameplayLoadoutOnPlayer _gameplayLoadoutOnPlayer;
+        private GameplayLoadoutOnPlayerV2 _gameplayLoadoutOnPlayer;
             
         private void Awake()
         {
@@ -38,7 +38,7 @@ namespace Modules.Player.Scripts.Controller
 
             _playerComponentEventBus = GetComponent<PlayerComponentEventBus>();
             _playerInputMapping = GetComponent<PlayerInputMapping>();
-            _itemManager = GetComponent<GameplayLoadoutOnPlayer>();
+            gameplayLoadout = GetComponent<GameplayLoadout>();
             // _itemManager.InitItemManager(initialStateName);
             
             InitializePlayerGameplayState();
@@ -113,8 +113,8 @@ namespace Modules.Player.Scripts.Controller
         {
             _playerGameplayStatsState = GetComponent<PlayerGameplayStatsState>();
             _playerAbilityManager = GetComponent<PlayerAbilityManager>();
-            _gameplayLoadoutOnPlayer = GetComponent<GameplayLoadoutOnPlayer>();
-            _gameplayLoadoutOnPlayer.InitLoadOut();
+            _gameplayLoadoutOnPlayer = GetComponent<GameplayLoadoutOnPlayerV2>();
+            // _gameplayLoadoutOnPlayer.InitLoadOut();
             
             _playerAbilityManager.InitializeAbilityManager();
         }

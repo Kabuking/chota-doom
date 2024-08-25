@@ -7,6 +7,9 @@ namespace Modules.Player.Scripts.Abilities.Base
 {
     public class PlayerAbilityManager: MonoBehaviour
     {
+        //Currently as Ability 1,2,3..
+        [SerializeField] private List<AbilityTriggeredInputType> unlockedAbilities;
+        
         public List<AbilityConfigSo> startingAbilityList;
         
         public List<AbilityConfigSo> defaultAbilities;
@@ -40,7 +43,16 @@ namespace Modules.Player.Scripts.Abilities.Base
 
         //Receive input
         //TODO To not take everything
-        void AddAbilityToStack(AbilityTriggeredInputType inputAbility) => _abilityStackProcessor.AddIncomingAbilityInputToStack(inputAbility);
+        void AddAbilityToStack(AbilityTriggeredInputType inputAbility)
+        {
+            
+            //Todo: To perform check before adding
+            // inputAbility.
+            if (unlockedAbilities.Contains(inputAbility))
+            {
+                _abilityStackProcessor.AddIncomingAbilityInputToStack(inputAbility);
+            }
+        }
 
         public bool CanIPerformAbilityAbility() => _abilityStackProcessor.CheckIfAbilityCanBePerformed();
         public void AbilityApplyOnStart() => _abilityStackProcessor.AbilityPerformOnStart();
