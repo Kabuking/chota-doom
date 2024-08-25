@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] float staggerAmount;
 
     [Header("Serialized for debugging")]
-    [SerializeField] float health;
+    public float health;
 
     [SerializeField] private List<AudioClip> bulletHit;
     [SerializeField] private AudioSource _audioSource;
@@ -26,6 +26,8 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Enemy OnTriggerEnter damage " + other.tag);
+
         if (other.CompareTag("PlayerDamage")) // <- change to PlayerAttack after testing
         {
             Debug.Log("Enemy taking damage");
@@ -41,12 +43,12 @@ public class EnemyHealth : MonoBehaviour
         if(health <= 0)
         {
             Debug.Log("Me ded");
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
 
     public void Stagger(Vector3 direction_of_impact) {
-        bodyToStagger.position = bodyToStagger.position + staggerAmount * new Vector3(direction_of_impact.x, 0, direction_of_impact.z);     
+        bodyToStagger.position = bodyToStagger.position + staggerAmount * new Vector3(direction_of_impact.x, 0 , direction_of_impact.z);     
     }
 
 }

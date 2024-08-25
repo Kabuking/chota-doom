@@ -9,6 +9,8 @@ namespace Modules.Loadout.Scripts.Guns
 {
     public class PlayerGun: ItemBase
     {
+        [Header("Enemy effects")]
+        public bool readyToFire = true;
 
         [Header("Stats")] 
         [SerializeField] private float bulletSpeed = 50;
@@ -135,8 +137,9 @@ namespace Modules.Loadout.Scripts.Guns
         //Currently only implement single shot and rapid fire
         void ApplyFire()
         {
-
-            
+            if (!readyToFire) {
+                return;
+            } 
             
             if (currentAmmoLeft < 1)
             {
