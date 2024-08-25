@@ -47,8 +47,8 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             playerController = controller;
             _playerComponentEventBus = controller.transform.root.GetComponent<PlayerComponentEventBus>();
             _playerAbilityManager = controller.GetComponent<PlayerAbilityManager>();
-            _playerDamageSystem = controller.GetComponent<PlayerDamageSystem>();
-                
+            // _playerDamageSystem = controller.GetComponent<PlayerDamageSystem>();
+            _playerDamageSystem = controller.GetComponentInChildren<PlayerDamageSystem>();
             crouchAbility = _playerAbilityManager.GetDefaultAbility(AbilityType.Crouch);
         }
         public override void OnEnter()

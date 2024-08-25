@@ -87,12 +87,14 @@ public class BulletBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!bulletActive)
-            return;
+        //TODO:
+        /*if(!bulletActive)
+            return;*/
         
         if (other.gameObject.CompareTag(TagNames.Enemy) ||
             other.gameObject.CompareTag(TagNames.Player))
         {
+            Debug.Log("Triggered with "+other.gameObject.name);
             
             //TODO
             //If Player is ducking do not impact, go through
@@ -100,7 +102,11 @@ public class BulletBase : MonoBehaviour
             
             // DebugX.LogWithColorYellow("On trigger bullet");
             rbProjectile.velocity = Vector3.zero;
-            Instantiate(impactPrefab, transform.position, transform.rotation);
+            if (impactPrefab != null)
+            {
+                Instantiate(impactPrefab, transform.position, transform.rotation);
+            }
+
             Destroy(gameObject);
         }
     }

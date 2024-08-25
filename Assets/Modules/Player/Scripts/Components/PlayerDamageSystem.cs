@@ -5,6 +5,7 @@ using Modules.Common;
 using Modules.Player.Scripts.Controller;
 using Modules.Player.Scripts.InputSystem;
 using Modules.Player.Scripts.PlayerStateMachine.model;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Modules.Player.Scripts.Components
@@ -23,14 +24,13 @@ namespace Modules.Player.Scripts.Components
         [SerializeField] private int currentHealth;
         [SerializeField] private Vector2 lastDamageDirection;
 
-        public Vector2 damageDirection { get; private set; }
-        public bool coolDownFinished { get; private set; } = true;
+        public bool coolDownFinished = true;
 
         //Refs
         private PCharacterMovement characterMovement;
         private PlayerController _playerController;
         private PlayerInputMapping _playerInputMapping;
-        
+        private CharacterController _characterController;
         
         [SerializeField] private Renderer playerRender;
         [SerializeField] private Material aliveMaterial;
@@ -42,9 +42,10 @@ namespace Modules.Player.Scripts.Components
         
         private void Awake()
         {
-            characterMovement = GetComponent<PCharacterMovement>();
-            _playerController = GetComponent<PlayerController>();
-            _playerInputMapping = GetComponent<PlayerInputMapping>();
+            characterMovement =  transform.root.GetComponent<PCharacterMovement>();
+            _playerController =  transform.root.GetComponent<PlayerController>();
+            _playerInputMapping = transform.root.GetComponent<PlayerInputMapping>();
+            _characterController = transform.root.GetComponent<CharacterController>();
             
             currentHealth = maxHealth;
         }
@@ -94,6 +95,14 @@ namespace Modules.Player.Scripts.Components
 
             StartCoroutine(HurtCoolDown());
             
+            //Damage stagger
+            _characterController.SimpleMove( new Vector3(
+                                                 lastDamageDirection.x,
+                                                 0, 
+                                                 lastDamageDirection.y) 
+                                             * staggerSpeed);
+
+            
             if (currentHealth <= 0)
             {
                 _playerController.TriggerDead();
@@ -102,7 +111,7 @@ namespace Modules.Player.Scripts.Components
 
         public void OnDamageUpdate()
         {
-            characterMovement.ApplyXZVelocityWithoutMovement(staggerSpeed, lastDamageDirection);
+            //characterMovement.ApplyXZVelocityWithoutMovement(staggerSpeed, lastDamageDirection);
         }
         
         public void OnDamageExit()
@@ -121,21 +130,30 @@ namespace Modules.Player.Scripts.Components
             coolDownFinished = true;
         }
         
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag(TagNames.EnemyDamage))
             {
-                // DebugX.LogWithColorCyan("Found trigger Enemy Damage");
-                if (_playerController.currentStateName != PlayerStateName.Crouch)
+                DebugX.LogWithColorCyan("Found trigger Enemy Damage");
+
+                    
+                transform.root.GetComponent<CharacterController>()
+                    .SimpleMove( new Vector3(
+                        other.transform.position.z,
+                        0, 
+                        other.transform.position.x) 
+                                 * staggerSpeed);
+                
+                
+                /*if (_playerController.currentStateName != PlayerStateName.Crouch)
                 {
                     
                     BulletBase bulletBase = other.gameObject.GetComponent<BulletBase>();
-                    // Vector3 bulletDirection = bulletBase.rbProjectile.velocity.normalized;
-                    Vector3 bulletPosition = other.transform.position;
-                    Vector3 damageDirection = (transform.position - bulletPosition).normalized;
-                    // DebugX.LogWithColorCyan("Damage taken player "+damageDirection);
-                    TriggerTakeDamage(damageDirection, bulletBase.damageType);
-                }
+                    lastDamageDirection = new Vector2(other.transform.position.z, other.transform.position.x);
+                    TriggerTakeDamage(lastDamageDirection, bulletBase.damageType);
+
+                }*/
             }
         }
     }

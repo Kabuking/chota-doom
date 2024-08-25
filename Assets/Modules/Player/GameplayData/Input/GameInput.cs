@@ -630,7 +630,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""70fc50b6-3430-483e-88d7-479a8c5f79b5"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

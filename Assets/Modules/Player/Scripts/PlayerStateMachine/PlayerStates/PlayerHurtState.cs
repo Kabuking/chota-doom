@@ -12,7 +12,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         
         public PlayerHurtState(StateMachine<PlayerStateName, PlayerStateTransitionEvent> playerStateMachine, PlayerController controller) : base(playerStateMachine, controller)
         {
-            _playerDamageSystem = _playerAbilityManager.GetComponent<PlayerDamageSystem>();
+            _playerDamageSystem = _playerAbilityManager.GetComponentInChildren<PlayerDamageSystem>();
         }
 
         public override void OnEnter()

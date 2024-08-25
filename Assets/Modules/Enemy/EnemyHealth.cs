@@ -26,8 +26,6 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enemy OnTriggerEnter damage "+other.tag);
-
         if (other.CompareTag("PlayerDamage")) // <- change to PlayerAttack after testing
         {
             Debug.Log("Enemy taking damage");

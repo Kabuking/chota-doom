@@ -46,7 +46,8 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             }*/
             else
             {
-                characterMovement.StopVelocityXYZ();
+                //TODO 
+                //characterMovement.StopVelocityXYZ();
                 UpdateLocomotionStateTo(LocomotionNotAiming_Substate.Standing);
                 // StopVelocityXYZ();
             }
