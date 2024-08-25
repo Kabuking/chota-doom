@@ -54,6 +54,9 @@ namespace Modules.Loadout.Scripts.Guns
         {
             base.OnAwake();
             SetAmmoFull();
+            
+            //Consider PlayerGun attached to Player
+            _audioSourceGun = transform.root.GetComponent<AudioSource>();
         }
 
         void SetAmmoFull()
@@ -145,7 +148,8 @@ namespace Modules.Loadout.Scripts.Guns
             else
             {
 
-                _audioSourceGun.PlayOneShot(_audioClipGunShot);
+                if(_audioSourceGun!=null)
+                    _audioSourceGun.PlayOneShot(_audioClipGunShot);
                 
                 if (hasCameraShake && _cinemachineImpulseSource != null)
                 {

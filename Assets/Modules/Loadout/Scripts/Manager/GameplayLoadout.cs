@@ -11,6 +11,12 @@ namespace Modules.Loadout.Scripts.Manager
         //Getters
         // public abstract ItemBase Get_ActiveItemHolding();
         // public abstract List<ItemBase> Get_LoadOutItemsCarrying();
+
+        public abstract void OnItemUse();
+        public abstract void OnItemUseStop();
+        public abstract void ReceiveItemSwitchLeftRight();
+        
+        
         public abstract Transform Get_ItemSocketTransform();
         public abstract PlayerInput Get_OwnerPlayerInput();
         /*public abstract MonoBehaviour Get_OwningLoadOutManager();

@@ -71,13 +71,13 @@ namespace Modules.Loadout.Scripts.Manager
         }
 
         //TODO: Null check remove if possible
-        public void OnItemUse()
+        override public void OnItemUse()
         {
             // Debug.Log("Item use call "+itemRack.ActiveItemSlot == null);
             itemRack.ActiveItemSlot?.Item?.OnItemUse();
         }
-        public void OnItemUseStop() { itemRack.ActiveItemSlot?.Item?.OnItemUseStop(); }
-        public void ReceiveItemSwitchLeftRight() => itemRack.ReceiveItemSwitch();
+        override public void OnItemUseStop() { itemRack.ActiveItemSlot?.Item?.OnItemUseStop(); }
+        override public void ReceiveItemSwitchLeftRight() => itemRack.ReceiveItemSwitch();
         private void ReceivePickUpInput(ItemBase pickUpItemBase) { if (pickUpItemBase == null) return; itemRack.ReceiveItemPick(pickUpItemBase); }
         private void ReceiveItemDropInput() { itemRack.ReceiveItemDrop(); }
 

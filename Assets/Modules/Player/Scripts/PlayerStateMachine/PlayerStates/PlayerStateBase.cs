@@ -18,7 +18,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
         protected StateMachine<PlayerStateName, PlayerStateTransitionEvent> _playerStateMachine;
         protected PCharacterMovement characterMovement;
         protected readonly PlayerInputMapping playerInputMapping;
-        protected GameplayLoadoutOnPlayer _itemManager;
+        protected GameplayLoadout _gameplayLoadout;
 
         protected readonly PlayerComponentEventBus _playerComponentEventBus;
         
@@ -41,7 +41,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             _playerStateMachine = playerStateMachine;
             characterMovement = controller.GetComponent<PCharacterMovement>();
             playerInputMapping = controller.GetComponent<PlayerInputMapping>();
-            _itemManager = controller.GetComponent<GameplayLoadoutOnPlayer>();
+            _gameplayLoadout = controller.GetComponent<GameplayLoadout>();
             playerGameplayState = controller.GetComponent<PlayerGameplayStatsState>();
             _playerStats = controller.playerStats;
             playerController = controller;
@@ -234,9 +234,9 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
          * Items Related
          * This actions/events are triggered when player is in some state
          */
-        protected  virtual void OnInput_ActiveItemUse() => _itemManager.OnItemUse();
-        protected  virtual void OnInput_ItemUseStop()=> _itemManager.OnItemUseStop();
-        protected virtual void OnInput_ItemSwitch_Trigger() { _itemManager.ReceiveItemSwitchLeftRight(); }
+        protected  virtual void OnInput_ActiveItemUse() => _gameplayLoadout.OnItemUse();
+        protected  virtual void OnInput_ItemUseStop()=> _gameplayLoadout.OnItemUseStop();
+        protected virtual void OnInput_ItemSwitch_Trigger() { _gameplayLoadout.ReceiveItemSwitchLeftRight(); }
         protected virtual void OnItemSwitch_Finish(){}
         protected virtual void OnInput_ItemPickup_Trigger() { _playerComponentEventBus.ItemPickUpAttempt.Invoke(); }
         protected virtual void OnInput_ItemDrop_Trigger() { _playerComponentEventBus.ItemDropAttempt.Invoke(); }
