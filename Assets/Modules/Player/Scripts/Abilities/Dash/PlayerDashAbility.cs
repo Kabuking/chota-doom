@@ -36,6 +36,7 @@ namespace Modules.Player.Scripts.Abilities.Dash
         public override void AbilityOnExit()
         {
             base.AbilityOnExit();
+            _characterMovement.StopVelocityXYZ();
         }
 
         IEnumerator DashCoolDown()

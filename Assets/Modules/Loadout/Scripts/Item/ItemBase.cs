@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Modules.CommonEventBus;
 using Modules.Loadout.Scripts.Manager;
 using UnityEngine;
@@ -23,7 +25,19 @@ namespace Modules.Loadout.Scripts.Item
         [SerializeField] private PlayerInput ownerPlayer;
 
         [SerializeField] private Collider weaponCollider;
-        
+
+        protected CinemachineImpulseSource _cinemachineImpulseSource;
+
+        private void Awake()
+        {
+            OnAwake();
+        }
+
+        protected virtual void OnAwake()
+        {
+            _cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
+        }
+
         private void Start()
         {
             weaponCollider = GetComponent<Collider>();

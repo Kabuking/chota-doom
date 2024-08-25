@@ -11,6 +11,8 @@ namespace Modules.Player.Scripts.Components
 {
     public class PlayerDamageSystem: MonoBehaviour
     {
+        public float respawnTimerAfterDead = 2f;
+        
         //states
         [SerializeField] private float staggerSpeed;
         [SerializeField] private int maxHealth;
@@ -28,6 +30,15 @@ namespace Modules.Player.Scripts.Components
         private PCharacterMovement characterMovement;
         private PlayerController _playerController;
         private PlayerInputMapping _playerInputMapping;
+        
+        
+        [SerializeField] private Renderer playerRender;
+        [SerializeField] private Material aliveMaterial;
+        [SerializeField] private Material deadMaterial;
+        
+        public void SetAliveMaterial() => playerRender.material = aliveMaterial;
+        public void SetDeadMaterial() => playerRender.material = deadMaterial;
+        
         
         private void Awake()
         {
@@ -66,6 +77,9 @@ namespace Modules.Player.Scripts.Components
         // Logic Start
         public void OnDamageEnter()
         {
+            
+            characterMovement.StopVelocityXYZ();
+            
             coolDownFinished = false;
             IsTakingDamage = true;
 
@@ -77,10 +91,15 @@ namespace Modules.Player.Scripts.Components
                 default:
                     break;
             }
-            
+
             StartCoroutine(HurtCoolDown());
+            
+            if (currentHealth <= 0)
+            {
+                _playerController.TriggerDead();
+            }
         }
-        
+
         public void OnDamageUpdate()
         {
             characterMovement.ApplyXZVelocityWithoutMovement(staggerSpeed, lastDamageDirection);
@@ -102,17 +121,20 @@ namespace Modules.Player.Scripts.Components
             coolDownFinished = true;
         }
         
-        
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag(TagNames.EnemyDamage))
             {
+                // DebugX.LogWithColorCyan("Found trigger Enemy Damage");
                 if (_playerController.currentStateName != PlayerStateName.Crouch)
                 {
-                    BulletBase bullet = other.gameObject.GetComponent<BulletBase>();
+                    
+                    BulletBase bulletBase = other.gameObject.GetComponent<BulletBase>();
+                    // Vector3 bulletDirection = bulletBase.rbProjectile.velocity.normalized;
                     Vector3 bulletPosition = other.transform.position;
                     Vector3 damageDirection = (transform.position - bulletPosition).normalized;
-                    TriggerTakeDamage(damageDirection, bullet.damageType);
+                    // DebugX.LogWithColorCyan("Damage taken player "+damageDirection);
+                    TriggerTakeDamage(damageDirection, bulletBase.damageType);
                 }
             }
         }

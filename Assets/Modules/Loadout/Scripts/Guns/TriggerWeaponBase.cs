@@ -105,7 +105,7 @@ namespace Modules.Loadout.Scripts.Guns
                     if (_bulletPrefab != null)
                     {
                         var bulletSpawned = Instantiate(_bulletPrefab);
-                        bulletSpawned.SetBulletVelocity(bulletSpeed, BulletSpawnPoint);
+                        bulletSpawned.SetVelocity(bulletSpeed, BulletSpawnPoint);
                     }
 
 

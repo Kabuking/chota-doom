@@ -47,5 +47,12 @@
             Shells,
             Snipe
         }
+
+        public enum GunState
+        {
+            Firing,
+            Carrying,
+            Reloading
+        }
     }
 }
