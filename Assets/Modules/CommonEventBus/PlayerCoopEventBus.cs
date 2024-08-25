@@ -39,7 +39,7 @@ namespace Modules.CommonEventBus
         }
         public void OnPlayerLeftGame(PlayerInput playerInput)
         {
-            DebugX.LogWithColor($"PlayerInputStateSo: Player left game {playerInput.gameObject.name}", Color.red);
+            DebugX.LogWithColor($"PlayerInputStateSo: Player left game {playerInput.gameObject.name}", Color.yellow);
             PlayerLeftGameEvent.Invoke(playerInput);
         }
 

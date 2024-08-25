@@ -121,7 +121,7 @@ namespace Modules.Player.Scripts.CoopSystem
             RefreshActivePlayers();            
             
             RefreshManualJoiningInputAction();
-            Debug.Log(PlayerGlobalState.activePlayers+ " <<" + " current player index joined "+playerInput.playerIndex );
+            // Debug.Log(PlayerGlobalState.activePlayers+ " <<" + " current player index joined "+playerInput.playerIndex );
                 
             playerInput.gameObject.SetActive(true);
             playerInput.GetComponent<CharacterController>().enabled = false;
@@ -129,7 +129,7 @@ namespace Modules.Player.Scripts.CoopSystem
             if (playerInput.playerIndex == 0)
             {
                 playerInput.gameObject.transform.position = player1SpawnPointT.position;
-                DebugX.LogWithColorYellow(playerInput.transform.position + " | "+player1SpawnPointT.position);
+                // DebugX.LogWithColorYellow(playerInput.transform.position + " | "+player1SpawnPointT.position);
             }
             else if (playerInput.playerIndex == 1)
                 playerInput.transform.position = player2SpawnPointT.position;

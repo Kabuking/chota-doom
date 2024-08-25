@@ -50,13 +50,19 @@ namespace Modules.UI.Scripts.Slot
         {
             if (playerInput.playerIndex == 0)
             {
-                itemRackUILoadOutForPlayer1.OnPlayerLeftGameSession(playerInput);
-                Destroy(itemRackUILoadOutForPlayer1);
+                if (itemRackUILoadOutForPlayer1)
+                {
+                    itemRackUILoadOutForPlayer1.OnPlayerLeftGameSession(playerInput);
+                    Destroy(itemRackUILoadOutForPlayer1);
+                }
             }
             else
             {
-                itemRackUILoadOutForPlayer2.OnPlayerLeftGameSession(playerInput);
-                Destroy(itemRackUILoadOutForPlayer2);
+                if (itemRackUILoadOutForPlayer2 != null)
+                {
+                    itemRackUILoadOutForPlayer2.OnPlayerLeftGameSession(playerInput);
+                    Destroy(itemRackUILoadOutForPlayer2);
+                }
             }
         }
     }

@@ -236,7 +236,7 @@ namespace Modules.Player.Scripts.Components.TargetAssist
         /// <param name="incomingTargetSwitchTypeForButtons"></param>
         public void TargetSwitch(TargetSwitchTypeForButtons incomingTargetSwitchTypeForButtons)
         {
-            DebugX.LogWithColorYellow("Target switch triggered "+incomingTargetSwitchTypeForButtons);
+            // DebugX.LogWithColorYellow("Target switch triggered "+incomingTargetSwitchTypeForButtons);
             switch (incomingTargetSwitchTypeForButtons)
             {
                 case TargetSwitchTypeForButtons.RightStickFlick:
