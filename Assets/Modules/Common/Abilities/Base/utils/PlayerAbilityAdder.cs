@@ -2,6 +2,9 @@
 using Modules.Common.Abilities.Base.model;
 using Modules.Player.Scripts.Abilities.Crouch;
 using Modules.Player.Scripts.Abilities.Dash;
+using Modules.Player.Scripts.Abilities.Gunjammer;
+using Modules.Player.Scripts.Abilities.Skillshot;
+using Modules.Player.Scripts.Abilities.Stomp;
 using UnityEngine;
 
 namespace Modules.Common.Abilities.Base.utils
@@ -37,6 +40,15 @@ namespace Modules.Common.Abilities.Base.utils
                 {
                     case AbilityType.Dash:
                         allAbilityListAdded.Add(new PlayerDashAbility(pTransform, abilityConfigSo));
+                        break;
+                    case AbilityType.Skillshot:
+                        allAbilityListAdded.Add(new PSkillShotAbility(pTransform, abilityConfigSo));
+                        break;
+                    case AbilityType.GunJam:
+                        allAbilityListAdded.Add(new PGunJammer(pTransform, abilityConfigSo));
+                        break;
+                    case AbilityType.Stomp:
+                        allAbilityListAdded.Add(new PStompAbility(pTransform, abilityConfigSo));
                         break;
                     default:
                         break;

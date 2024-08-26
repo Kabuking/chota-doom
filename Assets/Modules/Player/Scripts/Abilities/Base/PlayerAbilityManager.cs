@@ -1,17 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Modules.Common.Abilities.Base.model;
 using Modules.Player.Scripts.InputSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Modules.Player.Scripts.Abilities.Base
 {
     public class PlayerAbilityManager: MonoBehaviour
     {
         //Currently as Ability 1,2,3..
+        [Tooltip("Unlockable Abilities")]
         [SerializeField] private List<AbilityTriggeredInputType> unlockedAbilities;
         
-        public List<AbilityConfigSo> startingAbilityList;
+        [Tooltip("All possible Abilities can perform in cach")]
+        public List<AbilityConfigSo> abilityCache;
         
+        
+        [Tooltip("Abilities which will be there by default")]
         public List<AbilityConfigSo> defaultAbilities;
         
         //Refs
@@ -68,5 +74,11 @@ namespace Modules.Player.Scripts.Abilities.Base
         //Debugging
         public AbilityType GetAbilityToBeProcessed() => _abilityStackProcessor._currentAbilityPerforming.abilityConfigSo.abilityType;
 
+
+        [SerializeField] private int abilitiesToPerformInStack;
+        private void Update()
+        {
+            abilitiesToPerformInStack = _abilityStackProcessor._playerAbilityInputProcessor.abilityInputListToPerform.Count;
+        }
     }
 }

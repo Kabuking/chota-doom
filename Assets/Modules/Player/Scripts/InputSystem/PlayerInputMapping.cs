@@ -41,7 +41,7 @@ namespace Modules.Player.Scripts.InputSystem
         
         
         //Testing only
-        public UnityAction<Vector2, BulletBase.DamageType> TestTakeSelfDamage = delegate {  };
+        public UnityAction<Vector3, BulletBase.DamageType> TestTakeSelfDamage = delegate {  };
 
 
         public Vector2 rollDirection = Vector2.zero;

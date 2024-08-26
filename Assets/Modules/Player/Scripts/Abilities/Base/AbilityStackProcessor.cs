@@ -11,7 +11,7 @@ namespace Modules.Player.Scripts.Abilities.Base
     {
         private PlayerAbilityManager _playerAbilityManager;
         private Transform playerTransform;
-        private PlayerAbilityInputProcessor _playerAbilityInputProcessor;
+        public PlayerAbilityInputProcessor _playerAbilityInputProcessor { get; private set; }
         public List<AbilityBase> abilityImplList { get; private set; }
         public List<AbilityBase> abilityImplListDefault { get; private set; }
         public AbilityBase _currentAbilityPerforming { get; private set; }
@@ -24,7 +24,7 @@ namespace Modules.Player.Scripts.Abilities.Base
 
             if (_playerAbilityManager is not null)
             {
-                abilityImplList = PlayerAbilityAdder.AddAllAbility(playerTransform, _playerAbilityManager.startingAbilityList);
+                abilityImplList = PlayerAbilityAdder.AddAllAbility(playerTransform, _playerAbilityManager.abilityCache);
                 abilityImplListDefault = PlayerAbilityAdder.AddDefaultAbility(playerTransform, _playerAbilityManager.defaultAbilities); 
             }
             else
@@ -41,8 +41,7 @@ namespace Modules.Player.Scripts.Abilities.Base
         public AbilityBase GetAbilityDefaultFromAbilityType(AbilityType abilityType) => abilityImplListDefault.FirstOrDefault(a => a.abilityConfigSo.abilityType == abilityType);
 
 
-        public void AddIncomingAbilityInputToStack(AbilityTriggeredInputType abilityInput) =>
-            _playerAbilityInputProcessor.AddAbilityToStack(abilityInput);
+        public void AddIncomingAbilityInputToStack(AbilityTriggeredInputType abilityInput) => _playerAbilityInputProcessor.AddAbilityToStack(abilityInput);
 
         public bool CheckIfAbilityCanBePerformed()
         {
@@ -70,7 +69,7 @@ namespace Modules.Player.Scripts.Abilities.Base
         {
             
             int? abilityToPerformIndex = _playerAbilityInputProcessor.RetrieveFirstAbilityInputFromStack();
-            if (abilityToPerformIndex != null)
+            if (abilityToPerformIndex.HasValue)
             {
                 if (abilityImplList.Count > abilityToPerformIndex)
                 {
@@ -82,13 +81,15 @@ namespace Modules.Player.Scripts.Abilities.Base
                 {
                     DebugX.LogWithColorYellow("Ability has no implementation");
                 }
+                
+                _playerAbilityInputProcessor.RemoveAnAbilityProcessed(abilityToPerformIndex.Value);
             }
             else
             {
                 DebugX.LogWithColorYellow("No Input Ability yet, This should not happen");
             }
 
-            _playerAbilityInputProcessor.RemoveAnAbilityProcessed();
+
         }
     }
 }

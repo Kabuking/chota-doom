@@ -25,6 +25,7 @@ namespace Modules.Loadout.Scripts.Manager
                     if (currentlyCarrying.GetItemId == itemId)
                         return;
                     
+                    currentlyCarrying.OnItemUseStop();
                     currentlyCarrying.gameObject.SetActive(false);
                 }
                 currentlyCarrying = gun;

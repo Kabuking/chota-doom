@@ -4,6 +4,9 @@
     {
         Crouch,
         Dash,
+        Skillshot,
+        GunJam,
+        Stomp,
         Teleport,
         Clone,
         SelfHurt

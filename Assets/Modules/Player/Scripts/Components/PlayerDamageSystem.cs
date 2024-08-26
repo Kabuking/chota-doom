@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections;
-using Characters.Player.Global;
+﻿using System.Collections;
 using Modules.Common;
 using Modules.Player.Scripts.Controller;
 using Modules.Player.Scripts.InputSystem;
 using Modules.Player.Scripts.PlayerStateMachine.model;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Modules.Player.Scripts.Components
 {
-    public class PlayerDamageSystem: MonoBehaviour
+    public class PlayerDamageSystem: ADamageable
     {
         public float respawnTimerAfterDead = 2f;
         
@@ -22,12 +19,11 @@ namespace Modules.Player.Scripts.Components
 
         [Space(10)]
         [SerializeField] private int currentHealth;
-        [SerializeField] private Vector2 lastDamageDirection;
+        [SerializeField] private Vector3 lastDamageDirection;
 
         public bool coolDownFinished = true;
 
         //Refs
-        private PCharacterMovement characterMovement;
         private PlayerController _playerController;
         private PlayerInputMapping _playerInputMapping;
         private CharacterController _characterController;
@@ -42,11 +38,9 @@ namespace Modules.Player.Scripts.Components
         
         private void Awake()
         {
-            characterMovement =  transform.root.GetComponent<PCharacterMovement>();
             _playerController =  transform.root.GetComponent<PlayerController>();
             _playerInputMapping = transform.root.GetComponent<PlayerInputMapping>();
             _characterController = transform.root.GetComponent<CharacterController>();
-            
             currentHealth = maxHealth;
         }
 
@@ -60,11 +54,11 @@ namespace Modules.Player.Scripts.Components
             _playerInputMapping.TestTakeSelfDamage -= TriggerTakeDamage;
         }
 
-        public bool IsTakingDamage { get; private set; }
+        public bool IsTakingDamage = false;
         public BulletBase.DamageType lastDamageType;
 
 
-        void TriggerTakeDamage(Vector2 damageDirection, BulletBase.DamageType damageType)
+        void TriggerTakeDamage(Vector3 damageDirection, BulletBase.DamageType damageType)
         {
             if (coolDownFinished)
             {
@@ -78,12 +72,8 @@ namespace Modules.Player.Scripts.Components
         // Logic Start
         public void OnDamageEnter()
         {
-            
-            characterMovement.StopVelocityXYZ();
-            
             coolDownFinished = false;
             IsTakingDamage = true;
-
             switch (lastDamageType)
             {
                 case BulletBase.DamageType.Normal:
@@ -92,33 +82,16 @@ namespace Modules.Player.Scripts.Components
                 default:
                     break;
             }
-
             StartCoroutine(HurtCoolDown());
-            
-            //Damage stagger
-            _characterController.SimpleMove( new Vector3(
-                                                 lastDamageDirection.x,
-                                                 0, 
-                                                 lastDamageDirection.y) 
-                                             * staggerSpeed);
-
-            
+            ApplyStagger();
             if (currentHealth <= 0)
             {
                 _playerController.TriggerDead();
             }
         }
 
-        public void OnDamageUpdate()
-        {
-            //characterMovement.ApplyXZVelocityWithoutMovement(staggerSpeed, lastDamageDirection);
-        }
-        
-        public void OnDamageExit()
-        {
-            characterMovement.StopVelocityXYZ();
-            IsTakingDamage = false;
-        }
+        public void OnDamageUpdate() { }
+        public void OnDamageExit(){ IsTakingDamage = false; }
         
         //Logic End
         IEnumerator HurtCoolDown()
@@ -130,31 +103,25 @@ namespace Modules.Player.Scripts.Components
             coolDownFinished = true;
         }
         
-        
-        private void OnTriggerEnter(Collider other)
+        public override void TakeBulletDamage(BulletBase iamBullet)
         {
-            if (other.gameObject.CompareTag(TagNames.EnemyDamage))
+            base.TakeBulletDamage(iamBullet);
+            if (iamBullet.gameObject.CompareTag(TagNames.EnemyDamage))
             {
-                DebugX.LogWithColorCyan("Found trigger Enemy Damage");
-
-                    
-                transform.root.GetComponent<CharacterController>()
-                    .SimpleMove( new Vector3(
-                        other.transform.position.z,
-                        0, 
-                        other.transform.position.x) 
-                                 * staggerSpeed);
-                
-                
-                /*if (_playerController.currentStateName != PlayerStateName.Crouch)
+                if (_playerController.currentStateName != PlayerStateName.Crouch)
                 {
-                    
-                    BulletBase bulletBase = other.gameObject.GetComponent<BulletBase>();
-                    lastDamageDirection = new Vector2(other.transform.position.z, other.transform.position.x);
-                    TriggerTakeDamage(lastDamageDirection, bulletBase.damageType);
-
-                }*/
+                    Vector3 staggerDirection = (transform.position - iamBullet.transform.position).normalized;
+                    staggerDirection = new Vector3(staggerDirection.x, transform.position.y, staggerDirection.z);
+                    TriggerTakeDamage(staggerDirection,iamBullet.damageType);
+                }
             }
+        }
+
+        void ApplyStagger()
+        {
+            _characterController
+                .SimpleMove( lastDamageDirection
+                             * staggerSpeed);
         }
     }
 }

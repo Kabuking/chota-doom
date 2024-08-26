@@ -24,7 +24,7 @@ public class BulletBase : MonoBehaviour
         Shock
     }
 
-    private float selfDestroyAfterSeconds = 2f;
+    [SerializeField] private float selfDestroyAfterSeconds = 3f;
     public float raycastBuffer = 1f; // Add a small buffer to the raycast
     private bool bulletActive = false;
     
@@ -88,8 +88,8 @@ public class BulletBase : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //TODO:
-        /*if(!bulletActive)
-            return;*/
+        if(!bulletActive)
+            return;
         
         if (other.gameObject.CompareTag(TagNames.Enemy) ||
             other.gameObject.CompareTag(TagNames.Player))
@@ -97,14 +97,17 @@ public class BulletBase : MonoBehaviour
             //TODO
             //If Player is ducking do not impact, go through
             
+            //Explicit call to TakeDamage
+            if (other.TryGetComponent<ADamageable>(out ADamageable damageable))
+            {
+                damageable.TakeBulletDamage(this);
+            }
             
-            // DebugX.LogWithColorYellow("On trigger bullet");
             rbProjectile.velocity = Vector3.zero;
             if (impactPrefab != null)
             {
                 Instantiate(impactPrefab, transform.position, transform.rotation);
             }
-
             Destroy(gameObject);
         }
     }
