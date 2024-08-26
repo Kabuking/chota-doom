@@ -27,7 +27,7 @@ namespace Modules.Player.Scripts.Abilities.Gunjammer
         {
             base.AbilityOnStart();
             _monoBehaviour.StartCoroutine(GunJamCoolDown());
-            // Debug.Log("Jammer ability triggered");
+            Debug.Log("Jammer ability triggered");
         }
 
         public override void AbilityOnExit()
@@ -43,6 +43,7 @@ namespace Modules.Player.Scripts.Abilities.Gunjammer
 
             foreach (var enemyGun in allGuns)
             {
+                Debug.Log("Jamming ");
                 enemyGun.enabled = false;
             }
             yield return new WaitForSeconds(gunJammerConfig.abilityExitDuration);
@@ -57,7 +58,7 @@ namespace Modules.Player.Scripts.Abilities.Gunjammer
 
             yield return new WaitForSeconds(gunJammerConfig.cooldown);
             SetCoolDownToFinished();
-            // Debug.Log("Player= Gun Jam cooldown finished");
+            Debug.Log("Player= Gun Jam cooldown finished");
         }
 
     }

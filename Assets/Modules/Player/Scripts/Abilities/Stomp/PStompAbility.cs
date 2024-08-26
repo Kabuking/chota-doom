@@ -20,7 +20,8 @@ namespace Modules.Player.Scripts.Abilities.Stomp
         public override void AbilityOnStart()
         {
             base.AbilityOnStart();
-            Object.Instantiate(_stompAbilityConfig.stompRing, spawnPosition.position, spawnPosition.rotation, spawnPosition);
+            Debug.Log("Spawn grass whoosh on "+spawnPosition.position);
+            Object.Instantiate(_stompAbilityConfig.stompRing, spawnPosition.position, spawnPosition.rotation);
             _monoBehaviour.StartCoroutine(StompAbilityCoolDown());
             // Debug.Log("Stomp ability triggered");
         }

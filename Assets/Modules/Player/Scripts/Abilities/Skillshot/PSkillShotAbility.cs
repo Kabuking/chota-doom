@@ -20,7 +20,7 @@ namespace Modules.Player.Scripts.Abilities.Skillshot
         public override void AbilityOnStart()
         {
             base.AbilityOnStart();
-            // Debug.Log("Skill shot ability triggered "+spawnPosition.name);
+            Debug.Log("Skill shot ability triggered "+spawnPosition.name);
             Object.Instantiate(_skillShotConfig.projectleSpawn, spawnPosition.position, spawnPosition.rotation, spawnPosition);
             _monoBehaviour.StartCoroutine(SkillShotCoolDown());
         }
