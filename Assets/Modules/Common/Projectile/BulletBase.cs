@@ -38,11 +38,12 @@ public class BulletBase : MonoBehaviour
 
         // lastPosition = bulletSpawnPoint.position;
 
-        bulletActive = true;
+        SetBulletActive();
             
         Destroy(gameObject, selfDestroyAfterSeconds);
     }
-    
+
+    public void SetBulletActive() => bulletActive = true;
 
     /*public float speed = 5;
     private Vector3 lastPosition;
@@ -97,9 +98,12 @@ public class BulletBase : MonoBehaviour
             //TODO
             //If Player is ducking do not impact, go through
             
+
+            
             //Explicit call to TakeDamage
             if (other.TryGetComponent<ADamageable>(out ADamageable damageable))
             {
+                Debug.Log("Found damageable "+other.gameObject);
                 damageable.TakeBulletDamage(this);
             }
             

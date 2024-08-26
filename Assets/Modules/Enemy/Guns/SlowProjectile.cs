@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class SlowProjectile : MonoBehaviour
 {
     [Header("Instantiation things")]
-    public GameObject projectilePrefab;
+    public BulletBase projectilePrefab;
     public Transform muzzle;
     public PlayerCoopEventBus playerInfoSC;
 
@@ -89,10 +89,10 @@ public class SlowProjectile : MonoBehaviour
             shooting = true;
             for(int i = 0; i < numberOfBullets; i++)
             {
-                GameObject projectile = Instantiate(projectilePrefab, muzzle.position, Quaternion.identity);
+                BulletBase projectile = Instantiate(projectilePrefab, muzzle.position, Quaternion.identity);
                 Vector3 direction = (targetTransform.position - muzzle.position).normalized;
                 projectile.GetComponent<Rigidbody>().velocity = direction * bulletSpeed;
-
+                projectile.SetBulletActive();
                 yield return new WaitForSeconds(timeBetweenBulllets);
             }
             shooting = false;
