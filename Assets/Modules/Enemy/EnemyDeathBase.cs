@@ -14,7 +14,7 @@ public class EnemyDeathBase : MonoBehaviour
     // Update is called once per frame
     void Update() {
         if (enemyHealth.health <= 0) {
-            Instantiate(collapseMeshes, transform.position, Quaternion.identity);
+            Instantiate(collapseMeshes, transform.position, transform.rotation);
             Destroy(gameObject);
         }
 
