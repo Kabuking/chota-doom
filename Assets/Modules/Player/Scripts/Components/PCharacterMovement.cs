@@ -31,11 +31,15 @@ namespace Modules.Player.Scripts.Components
 
         public void ApplyXZVelocity(float speed)
         {
-            _characterController.SimpleMove(new Vector3(
+            Vector3 toapplySpeed= new Vector3(
                 _playerInputMapping.incomingMovementVector.x,
                 0,
-                _playerInputMapping.incomingMovementVector.y) * speed);
-
+                _playerInputMapping.incomingMovementVector.y) * speed;
+            
+            // Debug.Log("Applying velocity "+_characterController.velocity + " applying "+toapplySpeed);
+            
+            
+            _characterController.SimpleMove(toapplySpeed);
             if (orientRotationToMovement)
             {
                 ApplyLookForwardMovement();
@@ -115,7 +119,11 @@ namespace Modules.Player.Scripts.Components
             }
         }
 
-        public void StopVelocityXYZ() => _characterController.SimpleMove(Vector3.zero);
+        public void StopVelocityXYZ()
+        {
+            _characterController.SimpleMove(Vector3.zero);
+        }
+
         public void SetLimitOrientToRotation(bool limitOrientationMovement) => limitMovementRotation = limitOrientationMovement;
         public void SetOrientToRotation(bool orientB) => orientRotationToMovement = orientB;
         public void SetRotationRate(float rotationRateF) => rotationRate = rotationRateF;

@@ -94,8 +94,6 @@ public class BulletBase : MonoBehaviour
         if (other.gameObject.CompareTag(TagNames.Enemy) ||
             other.gameObject.CompareTag(TagNames.Player))
         {
-            Debug.Log("Triggered with "+other.gameObject.name);
-            
             //TODO
             //If Player is ducking do not impact, go through
             

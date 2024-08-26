@@ -8,6 +8,11 @@ namespace Modules.Player.Scripts.CameraSystem
 {
     public class TwoPlayerFollowObject: MonoBehaviour
     {
+        [SerializeField] private float lerpSpeed = 4;
+        [SerializeField] private float yFactor = 1.5f;
+        [SerializeField] private float maxHeight = 20f;
+        [SerializeField] private float minHeight = 0.5f;
+        
         [SerializeField] private float zoomInzoomOutSpeed = 2;
         [SerializeField] private float zoomInzoomOutMinDbp = 5;
         [SerializeField] private float zoomInzoomOutMaxDbp = 10;
@@ -101,6 +106,9 @@ namespace Modules.Player.Scripts.CameraSystem
         
         [SerializeField] float newZPosition = 0;
         [SerializeField] float lastFrame_NewZPosition = 0;
+
+        // [SerializeField] private float heightAdapt;
+        [SerializeField] private float yMidpoint;
         void CamMaintainPosition()
         {
             newZPosition = 0;
@@ -111,8 +119,24 @@ namespace Modules.Player.Scripts.CameraSystem
                 lastFrame_NewZPosition = newZPosition;
             }
             float xMidpoint = (targetGroups[0].position.x + targetGroups[1].position.x) * 0.5f;
-            float yMidpoint = (targetGroups[0].position.y + targetGroups[1].position.y) * 0.5f;
-            followObjectTransform.position = new Vector3(xMidpoint, yMidpoint, _nearestPlayerToCamTransform.position.z - minStayAwayFromNearestPlayer + lastFrame_NewZPosition);
+
+            
+            yMidpoint = (targetGroups[0].position.y + targetGroups[1].position.y)  * yFactor * _currentFrame_distanceBetweenTwoPlayers;
+            
+            if (yMidpoint >= maxHeight)
+            {
+                yMidpoint = maxHeight;
+            }
+            
+            if (yMidpoint <= minHeight)
+            {
+                yMidpoint = minHeight;
+            }
+            
+            var newPosition = new Vector3(xMidpoint, yMidpoint, _nearestPlayerToCamTransform.position.z - minStayAwayFromNearestPlayer + lastFrame_NewZPosition);
+            followObjectTransform.position = Vector3.MoveTowards(followObjectTransform.transform.position, newPosition,
+                lerpSpeed * Time.deltaTime);
+            // followObjectTransform.position = 
         }
     }
 }

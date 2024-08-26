@@ -27,9 +27,9 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             
             HandleMovement(_playerStats.jogging_OnNotAiming);
             
-            if (CheckAndTriggerTransitionTo_Hurt()) { }
+            /*if (CheckAndTriggerTransitionTo_Hurt()) { }
             else if (TransitionForAbilityCheck()) {}
-            else if (CheckTransitionTo_Crouch()) { }
+            else if (CheckTransitionTo_Crouch()) { }*/
         }
 
         void HandleMovement(float speed)
@@ -47,7 +47,7 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             else
             {
                 //TODO 
-                //characterMovement.StopVelocityXYZ();
+                characterMovement.StopVelocityXYZ();
                 UpdateLocomotionStateTo(LocomotionNotAiming_Substate.Standing);
                 // StopVelocityXYZ();
             }
