@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Modules.CommonEventBus;
@@ -26,9 +27,10 @@ public class SlowProjectile : MonoBehaviour
     [Header("Serialized for debugging")]
     [SerializeField] bool shooting = false;
     public Transform targetTransform;
+    [SerializeField] private GameObject[] players;
 
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         playerInfoSC.PlayerJoinedGameEvent += OnPlayerJoined;
         playerInfoSC.PlayerLeftGameEvent += OnPlayerLeft;
@@ -39,6 +41,11 @@ public class SlowProjectile : MonoBehaviour
     {
         playerInfoSC.PlayerJoinedGameEvent -= OnPlayerJoined;
         playerInfoSC.PlayerLeftGameEvent -= OnPlayerLeft;
+    }*/
+
+    private void Start()
+    {
+        StartCoroutine(GetPlayers());
     }
 
     // Update is called once per frame
@@ -50,7 +57,7 @@ public class SlowProjectile : MonoBehaviour
     }
 
 
-    void OnPlayerJoined(PlayerInput player)
+    /*void OnPlayerJoined(PlayerInput player)
     {
         if(player.playerIndex == 0)
         {
@@ -83,7 +90,7 @@ public class SlowProjectile : MonoBehaviour
         }
 
         //on left any one
-    }
+    }*/
 
     IEnumerator WeaponSystem()
     {
@@ -121,6 +128,20 @@ public class SlowProjectile : MonoBehaviour
 
             yield return null;
         }
+    }
+    
+    IEnumerator GetPlayers() {
+        while (players.Length < 2) {
+            players = GameObject.FindGameObjectsWithTag("Player");
+            yield return new WaitForSeconds(1);
+        }
+
+        player_1_Transform = players[0].transform;
+        player_2_Transform = players[1].transform;
+
+        StartCoroutine(TargetSwitch());
+        StartCoroutine(WeaponSystem());
+
     }
 
 }

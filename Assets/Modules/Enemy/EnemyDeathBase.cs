@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class EnemyDeathBase : MonoBehaviour
 {
+    public bool AmITheBOSS = false;
     [SerializeField] private AbilityTriggeredInputType _abilityTriggeredInputType;
     [SerializeField] GameObject collapseMeshes;
     [SerializeField] EnemyHealth enemyHealth;
@@ -18,8 +19,13 @@ public class EnemyDeathBase : MonoBehaviour
     void Update() {
         if (enemyHealth.health <= 0) {
             Instantiate(collapseMeshes, transform.position, transform.rotation);
-            LevelEvents.LevelDefeated.Invoke(_abilityTriggeredInputType);
-            
+
+            if (AmITheBOSS)
+            {
+                Debug.Log("Boss ded");
+                LevelEvents.LevelDefeated.Invoke(_abilityTriggeredInputType);
+            }
+
             Destroy(gameObject);
         }
 

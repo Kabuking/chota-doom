@@ -71,7 +71,7 @@ public class Skillshot : MonoBehaviour
         // Perform the SphereCast
         if (Physics.SphereCast(startPosition, laserRadius, direction, out hitInfo, laserDistance, playerLmask))
         {
-            Debug.Log("Laser hit: " + hitInfo.collider.name);
+            // Debug.Log("Laser hit: " + hitInfo.collider.name);
 
             DamageOnlyPlayer(hitInfo.transform);
             // Optional: Draw a gizmo for visualization in the editor

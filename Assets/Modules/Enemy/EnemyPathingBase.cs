@@ -23,10 +23,11 @@ public class EnemyPathingBase : MonoBehaviour
     {
         initialHeight = transform.position.y;
         GetBounds();
-        StartCoroutine(GetPlayers());
+        
     }
     void Start()
     {
+        StartCoroutine(GetPlayers());
         SetNewRandomTarget();
     }
 
@@ -117,7 +118,7 @@ public class EnemyPathingBase : MonoBehaviour
         RaycastHit hitLeft;
         if (Physics.Raycast(transform.position, -Vector3.right, out hitLeft, 1000)) {
             if (hitLeft.collider.CompareTag("Bounds")) {
-                Debug.Log("Hit Bounds on the left: " + hitLeft.collider.name);
+                // Debug.Log("Hit Bounds on the left: " + hitLeft.collider.name);
                 leftWall = hitLeft.transform;
             }
         }
@@ -126,7 +127,7 @@ public class EnemyPathingBase : MonoBehaviour
         RaycastHit hitRight;
         if (Physics.Raycast(transform.position, Vector3.right, out hitRight, 1000)) {
             if (hitRight.collider.CompareTag("Bounds")) {
-                Debug.Log("Hit Bounds on the right: " + hitRight.collider.name);
+                // Debug.Log("Hit Bounds on the right: " + hitRight.collider.name);
                 rightWall = hitRight.transform;
             }
         }

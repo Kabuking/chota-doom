@@ -72,7 +72,7 @@ namespace Modules.Player.Scripts.Components
         {
             if (coolDownFinished)
             {
-                DebugX.LogWithColorYellow("Actia;lll Taking damage "+damageValue);
+                // DebugX.LogWithColorYellow("Actia;lll Taking damage "+damageValue);
                 IsTakingDamage = true;
                 lastDamageDirection = damageDirection;
                 lastDamageType = damageType;
@@ -141,7 +141,7 @@ namespace Modules.Player.Scripts.Components
         {
             base.TakeLaserDamage(damageType, damageValue);
             
-            Debug.Log("Player taking laser");
+            // Debug.Log("Player taking laser");
             TriggerTakeDamage(- transform.forward, damageType, damageValue);
             
             

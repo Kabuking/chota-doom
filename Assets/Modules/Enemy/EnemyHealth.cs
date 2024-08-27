@@ -39,7 +39,7 @@ public class EnemyHealth : MonoBehaviour
         health -= dmg;
         if(health <= 0)
         {
-            Debug.Log("Me ded");
+            // Debug.Log("Me ded");
             //gameObject.SetActive(false);
         }
     }

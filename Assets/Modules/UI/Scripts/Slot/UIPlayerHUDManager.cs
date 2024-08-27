@@ -1,4 +1,6 @@
-﻿using Modules.CommonEventBus;
+﻿using Modules.Common.Abilities.Base.model;
+using Modules.CommonEventBus;
+using Modules.Level;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,14 +10,18 @@ namespace Modules.UI.Scripts.Slot
     {
         [SerializeField] private UIPlayerHUDSlot _playerHudSlot1;
         [SerializeField] private UIPlayerHUDSlot _playerHudSlot2;
+        [SerializeField] private Transform bossDefeatedUI;
         private void OnEnable()
         {
             PlayerInventoryEventBus.PlayerReadyToShowUI += OnPlayerReadyToShowUI;
+            LevelEvents.LevelDefeated += EnableBossDefeatedUI;
         }
 
         private void OnDisable()
         {
             PlayerInventoryEventBus.PlayerReadyToShowUI -= OnPlayerReadyToShowUI;
+            LevelEvents.LevelDefeated -= EnableBossDefeatedUI;
+
         }
 
         void OnPlayerReadyToShowUI(PlayerInput playerInput)
@@ -37,6 +43,12 @@ namespace Modules.UI.Scripts.Slot
         void OnPlayerDead()
         {
             _playerHudSlot1.gameObject.SetActive(false);
+        }
+
+
+        void EnableBossDefeatedUI(AbilityTriggeredInputType a)
+        {
+            bossDefeatedUI.gameObject.SetActive(true);
         }
     }
 }

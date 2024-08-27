@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Modules.Common.Abilities.Base.model;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,11 +9,18 @@ namespace Modules.Level
 {
     public class LevelManager: MonoBehaviour
     {
-        public float levelReloadDelay = 2;
+        [SerializeField] private Transform theBoss;
+        public float bossSpawnDelay = 60;
+        public float levelReloadDelay = 5;
 
         public string nextLevelToLoad;
         
         private AbilityType _abilityTypeToUnlock;
+
+        private void Start()
+        {
+            StartCoroutine(BoosSpawnSpawnAfter());
+        }
 
         private void OnEnable()
         {
@@ -37,7 +45,7 @@ namespace Modules.Level
         {
             PlayThroughState.unlockedAbilities[abilityTypeToUnlock] = true;
 
-            SceneManager.LoadScene(nextLevelToLoad);
+            StartCoroutine(ReloadLevel());
         }
         
         
@@ -48,6 +56,12 @@ namespace Modules.Level
             
             yield return new WaitForSeconds(levelReloadDelay);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        IEnumerator BoosSpawnSpawnAfter()
+        {
+            yield return new WaitForSeconds(bossSpawnDelay);
+            theBoss.gameObject.SetActive(true);
         }
     }
 }
