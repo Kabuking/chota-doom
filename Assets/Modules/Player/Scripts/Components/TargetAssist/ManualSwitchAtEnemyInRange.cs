@@ -2,6 +2,7 @@
 using System.Linq;
 using Characters.Player.Global;
 using Levels.L_Testing.Scripts;
+using Modules.CommonEventBus;
 using Modules.Enemy;
 using Modules.Player.Scripts.ComponentEventBus;
 using Modules.Player.Scripts.InputSystem;
@@ -42,6 +43,8 @@ namespace Modules.Player.Scripts.Components.TargetAssist
 
 
         [Header("Debug")] [SerializeField] private EnemyBase currentTargetEnemy;
+        public EnemyBase GetCurrentEnemyTarget => currentTargetEnemy;
+        
         private PCharacterMovement _characterMovement;
 
         // [SerializeField] private bool SwitchTargetBool = false;
@@ -160,6 +163,8 @@ namespace Modules.Player.Scripts.Components.TargetAssist
             }
 
             currentTargetEnemy = newTargetLocked;
+            
+            // PlayerInventoryEventBus.ShowItemPickupInfo
             if (currentTargetEnemy != null)
                 currentTargetEnemy.OnLockedMe(_playerInput);
         }

@@ -17,5 +17,7 @@ namespace Modules.CommonEventBus
         
         
         public static UnityAction<PlayerInput>  PlayerReadyToShowUI = delegate { };
+        
+        public static UnityAction<Vector3>  TargetUpdate = delegate { };
     }
 }
