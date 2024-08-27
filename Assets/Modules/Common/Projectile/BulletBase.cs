@@ -8,7 +8,7 @@ using UnityEngine;
 public class BulletBase : MonoBehaviour
 {
     [Header("Bullet stats")]
-    public float damage;
+    public int damage;
 
     [Header("Bullet type")]
     public DamageType damageType = DamageType.Normal;
@@ -103,7 +103,7 @@ public class BulletBase : MonoBehaviour
             //Explicit call to TakeDamage
             if (other.TryGetComponent<ADamageable>(out ADamageable damageable))
             {
-                Debug.Log("Found damageable "+other.gameObject);
+                // Debug.Log("Found damageable "+other.gameObject);
                 damageable.TakeBulletDamage(this);
             }
             

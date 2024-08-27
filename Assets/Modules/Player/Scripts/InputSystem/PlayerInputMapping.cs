@@ -41,7 +41,7 @@ namespace Modules.Player.Scripts.InputSystem
         
         
         //Testing only
-        public UnityAction<Vector3, BulletBase.DamageType> TestTakeSelfDamage = delegate {  };
+        public UnityAction<Vector3, BulletBase.DamageType, int> TestTakeSelfDamage = delegate {  };
 
 
         public Vector2 rollDirection = Vector2.zero;
@@ -314,7 +314,7 @@ namespace Modules.Player.Scripts.InputSystem
 
         void OnDamageSelf(InputAction.CallbackContext context)
         {
-            TestTakeSelfDamage.Invoke(Random.insideUnitCircle.normalized, BulletBase.DamageType.Normal);
+            TestTakeSelfDamage.Invoke(Random.insideUnitCircle.normalized, BulletBase.DamageType.Normal, 10);
         }
         
         //For Live Debugging

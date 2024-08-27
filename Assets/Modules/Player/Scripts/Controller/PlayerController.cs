@@ -1,4 +1,5 @@
-﻿using Characters.Player.Global;
+﻿using System.Collections;
+using Characters.Player.Global;
 using Modules.CommonEventBus;
 using Modules.Loadout.Scripts.Item;
 using Modules.Loadout.Scripts.Manager;
@@ -9,6 +10,7 @@ using Modules.Player.Scripts.PlayerData;
 using Modules.Player.Scripts.PlayerStateMachine.model;
 using Modules.Player.Scripts.PlayerStateMachine.PlayerStates;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityHFSM;
 
 namespace Modules.Player.Scripts.Controller
@@ -43,7 +45,8 @@ namespace Modules.Player.Scripts.Controller
             
             InitializePlayerGameplayState();
             InitializeFsmStates();
-            
+
+            StartCoroutine(DelayedUIShowHUD());
         }
 
         private void OnEnable()
@@ -236,6 +239,12 @@ namespace Modules.Player.Scripts.Controller
         {
             // DebugX.LogWithColorCyan("Transition dead");
             playerFSM.TriggerLocally(PlayerStateTransitionEvent.Transition_To_Dead);
+        }
+
+        IEnumerator DelayedUIShowHUD()
+        {
+            yield return new WaitForSeconds(1f);
+            PlayerInventoryEventBus.PlayerReadyToShowUI.Invoke(GetComponent<PlayerInput>());
         }
     }
 }

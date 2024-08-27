@@ -4,6 +4,7 @@ using Modules.Player.Scripts.Controller;
 using Modules.Player.Scripts.InputSystem;
 using Modules.Player.Scripts.PlayerStateMachine.model;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Modules.Player.Scripts.Components
 {
@@ -20,6 +21,7 @@ namespace Modules.Player.Scripts.Components
         [Space(10)]
         [SerializeField] private int currentHealth;
         [SerializeField] private Vector3 lastDamageDirection;
+        [SerializeField] private int lastDamageValue;
 
         public bool coolDownFinished = true;
 
@@ -34,7 +36,9 @@ namespace Modules.Player.Scripts.Components
         
         public void SetAliveMaterial() => playerRender.material = aliveMaterial;
         public void SetDeadMaterial() => playerRender.material = deadMaterial;
-        
+
+
+        public UnityAction<int> OnHealthNumberUpdate;
         
         private void Awake()
         {
@@ -58,7 +62,7 @@ namespace Modules.Player.Scripts.Components
         public BulletBase.DamageType lastDamageType;
 
 
-        void TriggerTakeDamage(Vector3 damageDirection, BulletBase.DamageType damageType)
+        void TriggerTakeDamage(Vector3 damageDirection, BulletBase.DamageType damageType, int damageValue)
         {
             if (coolDownFinished)
             {
@@ -66,6 +70,7 @@ namespace Modules.Player.Scripts.Components
                 IsTakingDamage = true;
                 lastDamageDirection = damageDirection;
                 lastDamageType = damageType;
+                lastDamageValue = damageValue;
             }
         }
         
@@ -77,7 +82,8 @@ namespace Modules.Player.Scripts.Components
             switch (lastDamageType)
             {
                 case BulletBase.DamageType.Normal:
-                    currentHealth = Mathf.Clamp(currentHealth - 1,0,maxHealth );
+                    currentHealth = Mathf.Clamp(currentHealth - lastDamageValue,0,maxHealth );
+                    OnHealthNumberUpdate.Invoke(currentHealth);
                     break;
                 default:
                     break;
@@ -112,7 +118,7 @@ namespace Modules.Player.Scripts.Components
                 {
                     Vector3 staggerDirection = (transform.position - iamBullet.transform.position).normalized;
                     staggerDirection = new Vector3(staggerDirection.x, transform.position.y, staggerDirection.z);
-                    TriggerTakeDamage(staggerDirection,iamBullet.damageType);
+                    TriggerTakeDamage(staggerDirection,iamBullet.damageType, iamBullet.damage);
                 }
             }
         }
