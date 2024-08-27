@@ -21,7 +21,8 @@ public class BulletBase : MonoBehaviour
     public enum DamageType { 
         Normal,
         Bleed,
-        Shock
+        Shock,
+        Laser
     }
 
     [SerializeField] private float selfDestroyAfterSeconds = 3f;
@@ -123,7 +124,7 @@ public class BulletBase : MonoBehaviour
     protected void DamageOnlyPlayer(Transform other) {
         //Explicit call to TakeDamage
         if (other.TryGetComponent<ADamageable>(out ADamageable damageable)) {
-            Debug.Log("to player XXX  Found damageable " + other.gameObject);
+            // Debug.Log("to player XXX  Found damageable " + other.gameObject);
             damageable.TakeBulletDamage(this);
         }
     }
@@ -131,7 +132,7 @@ public class BulletBase : MonoBehaviour
 
     private void OnTriggerStay(Collider other) {
 
-        Debug.Log("On trigger stay " + other.gameObject);
+        // Debug.Log("On trigger stay " + other.gameObject);
 
 
         DamageOnTriggerStay(other.transform);

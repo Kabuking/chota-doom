@@ -14,6 +14,9 @@ public class Beam : BulletBase {
     [SerializeField] Light[] lightArray;
     [SerializeField] GameObject lightArrayParent;
     [SerializeField] GameObject grassWhoosher;
+    [SerializeField] private VolumetricLightBeamSD damageBeam;
+    
+    
 
     [Header("Beam stats")]
     [SerializeField] float rampUpTime;
@@ -24,11 +27,6 @@ public class Beam : BulletBase {
     float startIntensityLightArray;
     float startIntensityMuzzleFlash;
     float startIntensityBeamItself;
-
-    [Header("Damage stuff")]
-    //[SerializeField] float damage;
-    [SerializeField] GameObject damageCollider;
-
 
     [Header("Serialized for debugging")]
     [SerializeField] float elapsedTime;
@@ -73,7 +71,7 @@ public class Beam : BulletBase {
 
         // PEWWWWW!!!
         Debug.Log("pew");
-        damageCollider.SetActive(true);
+        damageBeam.enabled = true;
 
         muzzleFlash.enabled = true;
         muzzleLight.enabled = true;
@@ -111,6 +109,7 @@ public class Beam : BulletBase {
 
         muzzleFlash.enabled = false;
         muzzleLight.enabled = false;
+        damageBeam.enabled = false;
     }
 
     override protected void DamageOnTriggerStay(Transform personToDamage) {

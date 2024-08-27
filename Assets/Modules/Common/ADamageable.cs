@@ -8,5 +8,10 @@ namespace Modules.Common
         {
             
         }
+        
+        public virtual void TakeLaserDamage(BulletBase.DamageType damageType, int damageValue)
+        {
+            
+        }
     }
 }

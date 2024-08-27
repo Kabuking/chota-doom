@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Modules.Common.Abilities.Base.model;
+using Modules.Level;
 using Modules.Player.Scripts.InputSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,6 +10,8 @@ namespace Modules.Player.Scripts.Abilities.Base
 {
     public class PlayerAbilityManager: MonoBehaviour
     {
+        [SerializeField] private bool debugMode;
+        
         //Currently as Ability 1,2,3..
         [Tooltip("Unlockable Abilities")]
         [SerializeField] private List<AbilityTriggeredInputType> unlockedAbilities;
@@ -25,10 +28,23 @@ namespace Modules.Player.Scripts.Abilities.Base
         
         //Processors
         private AbilityStackProcessor _abilityStackProcessor;
-        
+
+
         //Call first before state machine init
         public void InitializeAbilityManager()
         {
+            if (!debugMode)
+            {
+                //According to play
+                foreach (var (abilityType, abilityStatus) in PlayThroughState.unlockedAbilities)
+                {
+                    if (abilityStatus && !unlockedAbilities.Contains(abilityType))
+                    {
+                        unlockedAbilities.Add(abilityType);
+                    }
+                }
+            }
+
             _playerInputMapping = GetComponent<PlayerInputMapping>();
             // _playerComponentEventBus = transform.GetComponent<PlayerComponentEventBus>();
             _abilityStackProcessor = new AbilityStackProcessor(this);

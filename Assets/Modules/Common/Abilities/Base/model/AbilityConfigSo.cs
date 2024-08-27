@@ -7,5 +7,7 @@ namespace Modules.Common.Abilities.Base.model
         public AbilityType abilityType;
         public float cooldown;
         public float abilityExitDuration;
+        public float rampUp = 1f;
+
     }
 }

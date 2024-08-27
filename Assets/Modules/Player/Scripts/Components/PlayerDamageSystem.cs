@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using Characters.Player.Global;
 using Modules.Common;
+using Modules.Level;
 using Modules.Player.Scripts.Controller;
 using Modules.Player.Scripts.InputSystem;
 using Modules.Player.Scripts.PlayerStateMachine.model;
@@ -14,6 +16,8 @@ namespace Modules.Player.Scripts.Components
         
         //states
         [SerializeField] private float staggerSpeed;
+        [SerializeField] private float staggerOnLaserMultiplier = 1.2f;
+
         [SerializeField] private int maxHealth;
         [SerializeField] private float hurtCoolDown;
         [SerializeField] private float hurtDuration;
@@ -24,6 +28,8 @@ namespace Modules.Player.Scripts.Components
         [SerializeField] private int lastDamageValue;
 
         public bool coolDownFinished = true;
+
+        [SerializeField] private GameObject playerCollapseMesh;
 
         //Refs
         private PlayerController _playerController;
@@ -66,7 +72,7 @@ namespace Modules.Player.Scripts.Components
         {
             if (coolDownFinished)
             {
-                // DebugX.LogWithColorYellow("Taking damage");
+                DebugX.LogWithColorYellow("Actia;lll Taking damage "+damageValue);
                 IsTakingDamage = true;
                 lastDamageDirection = damageDirection;
                 lastDamageType = damageType;
@@ -83,13 +89,19 @@ namespace Modules.Player.Scripts.Components
             {
                 case BulletBase.DamageType.Normal:
                     currentHealth = Mathf.Clamp(currentHealth - lastDamageValue,0,maxHealth );
+                    ApplyStagger();
                     OnHealthNumberUpdate.Invoke(currentHealth);
+                    break;
+                case BulletBase.DamageType.Laser:
+                    currentHealth = Mathf.Clamp(currentHealth - lastDamageValue,0,maxHealth );
+                    ApplyStagger(staggerOnLaserMultiplier);
+                    OnHealthNumberUpdate?.Invoke(currentHealth);
                     break;
                 default:
                     break;
             }
             StartCoroutine(HurtCoolDown());
-            ApplyStagger();
+
             if (currentHealth <= 0)
             {
                 _playerController.TriggerDead();
@@ -125,11 +137,40 @@ namespace Modules.Player.Scripts.Components
             }
         }
 
-        void ApplyStagger()
+        public override void TakeLaserDamage(BulletBase.DamageType damageType, int damageValue)
+        {
+            base.TakeLaserDamage(damageType, damageValue);
+            
+            Debug.Log("Player taking laser");
+            TriggerTakeDamage(- transform.forward, damageType, damageValue);
+            
+            
+            /*if (iamBullet.gameObject.CompareTag(TagNames.EnemyDamage))
+            {
+                if (_playerController.currentStateName != PlayerStateName.Crouch)
+                {
+                    Vector3 staggerDirection = (transform.position - iamBullet.transform.position).normalized;
+                    //staggerDirection = new Vector3(staggerDirection.x, transform.position.y, staggerDirection.z);
+                    staggerDirection = - transform.forward;
+
+                    TriggerTakeDamage(staggerDirection,damageType, damageValue);
+                }
+            }*/
+        }
+        
+        void ApplyStagger(float staggerSpeedExtraMultipler = 1)
         {
             _characterController
                 .SimpleMove( lastDamageDirection
-                             * staggerSpeed);
+                             * staggerSpeed * staggerSpeedExtraMultipler);
+        }
+
+        public void SpawnPlayerCollapse()
+        {
+            Instantiate(playerCollapseMesh, transform.position, transform.rotation);
+            gameObject.SetActive(false);
+            
+            LevelEvents.OnePlayerDead.Invoke();
         }
     }
 }

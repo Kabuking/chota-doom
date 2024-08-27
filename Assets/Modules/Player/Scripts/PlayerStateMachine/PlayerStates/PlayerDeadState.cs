@@ -22,9 +22,9 @@ namespace Modules.Player.Scripts.PlayerStateMachine.PlayerStates
             base.OnEnter();
             DebugX.LogWithColorGreen($"Respawning....in {_playerDamageSystem.respawnTimerAfterDead} seconds");
             
-            
-            _playerDamageSystem.SetDeadMaterial();
-            _playerDamageSystem.StartCoroutine(RespawnTimer());
+            _playerDamageSystem.SpawnPlayerCollapse();
+            // _playerDamageSystem.SetDeadMaterial();
+            // _playerDamageSystem.StartCoroutine(RespawnTimer());
         }
 
         public override void OnLogic()
