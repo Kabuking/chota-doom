@@ -14,10 +14,11 @@ public class GunRecoilAnimator : MonoBehaviour
     private Quaternion originalRotation;
     private bool isShaking = true;
 
+    public Transform parentGun;
     private void Start()
     {
-        originalPosition = transform.localPosition;
-        originalRotation = transform.localRotation;
+        originalPosition = parentGun.localPosition;
+        originalRotation = parentGun.localRotation;
     }
 
     private void Update()
@@ -37,8 +38,8 @@ public class GunRecoilAnimator : MonoBehaviour
     {
         isShaking = false;
         // Reset to original position and rotation
-        transform.localPosition = originalPosition;
-        transform.localRotation = originalRotation;
+        parentGun.localPosition = originalPosition;
+        parentGun.localRotation = originalRotation;
     }
 
     private void Shake()
@@ -54,8 +55,8 @@ public class GunRecoilAnimator : MonoBehaviour
         float rotZ = Random.Range(-1f, 1f) * rotationMagnitude_z;
 
         // Apply position and rotation offsets
-        transform.localPosition = new Vector3(0, y, z) + originalPosition;
-        transform.localRotation = Quaternion.Euler(new Vector3(0, rotY, rotZ)) * originalRotation;
+        parentGun.localPosition = new Vector3(0, y, z) + originalPosition;
+        parentGun.localRotation = Quaternion.Euler(new Vector3(0, rotY, rotZ)) * originalRotation;
     }
 
 

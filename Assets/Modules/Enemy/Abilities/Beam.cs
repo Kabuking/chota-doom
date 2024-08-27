@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Modules.Common;
 using StylizedGrass;
+using Unity.VisualScripting;
 using UnityEngine;
 using VLB;
 
-public class Beam : MonoBehaviour
-{
+public class Beam : BulletBase {
     [SerializeField] Light muzzleLight;
     [SerializeField] VolumetricLightBeamSD muzzleFlash;
     [SerializeField] VolumetricLightBeamSD beamItself;
@@ -24,6 +25,11 @@ public class Beam : MonoBehaviour
     float startIntensityMuzzleFlash;
     float startIntensityBeamItself;
 
+    [Header("Damage stuff")]
+    //[SerializeField] float damage;
+    [SerializeField] GameObject damageCollider;
+
+
     [Header("Serialized for debugging")]
     [SerializeField] float elapsedTime;
     [SerializeField] float currentValue_beam;
@@ -31,17 +37,29 @@ public class Beam : MonoBehaviour
     [SerializeField] float currentValue_muzzle;
     [SerializeField] float currentValue_grass;
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         StartCoroutine(PewPew());
         Destroy(gameObject, 6);
     }
+
+    /*private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Player")|| other.gameObject.CompareTag(TagNames.Enemy)) {
+
+
+            if (other.TryGetComponent<ADamageable>(out ADamageable damageable)) {
+                Debug.Log("playwer laserrrrredd   Found damageable "+other.gameObject);
+                damageable.TakeBulletDamage(this);
+            }
+        }
+    }*/
 
     // Update is called once per frame
     void Update()
     {
         
     }
+
+    
 
     IEnumerator PewPew() {
 
@@ -54,13 +72,15 @@ public class Beam : MonoBehaviour
         }
 
         // PEWWWWW!!!
+        Debug.Log("pew");
+        damageCollider.SetActive(true);
 
         muzzleFlash.enabled = true;
         muzzleLight.enabled = true;
         Instantiate(grassWhoosher, transform.position + transform.forward * 20, transform.rotation);
         //maxGrassBend = grassWhoosher.transform.localScale.x;
         beamHalo.enabled = false;
-        lightArrayParent.SetActive(true);
+        //lightArrayParent.SetActive(true);
 
         startIntensityBeamItself = beamItself.intensityGlobal;
         startIntensityLightArray = lightArray[2].intensity;
@@ -71,10 +91,10 @@ public class Beam : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / rampDownTime;
             
-            currentValue_lights = Mathf.Lerp(startIntensityLightArray, 0, t);
+            /*currentValue_lights = Mathf.Lerp(startIntensityLightArray, 0, t);
             foreach (Light light in lightArray) {
                 light.intensity = currentValue_lights;
-            }
+            }*/
 
             currentValue_muzzle = Mathf.Lerp(startIntensityMuzzleFlash, 0, t);
             muzzleFlash.intensityGlobal = currentValue_muzzle;
@@ -93,5 +113,10 @@ public class Beam : MonoBehaviour
         muzzleLight.enabled = false;
     }
 
+    override protected void DamageOnTriggerStay(Transform personToDamage) {
+
+        DamageOnlyPlayer(personToDamage);
+
+    }
 
 }

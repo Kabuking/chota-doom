@@ -101,12 +101,15 @@ public class BulletBase : MonoBehaviour
 
             
             //Explicit call to TakeDamage
-            if (other.TryGetComponent<ADamageable>(out ADamageable damageable))
+            /*if (other.TryGetComponent<ADamageable>(out ADamageable damageable))
             {
-                // Debug.Log("Found damageable "+other.gameObject);
+                Debug.Log("to player XXX  Found damageable "+other.gameObject);
                 damageable.TakeBulletDamage(this);
-            }
-            
+            }*/
+
+            DamageOnlyPlayer(other.transform);
+
+
             rbProjectile.velocity = Vector3.zero;
             if (impactPrefab != null)
             {
@@ -115,4 +118,27 @@ public class BulletBase : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+   
+    protected void DamageOnlyPlayer(Transform other) {
+        //Explicit call to TakeDamage
+        if (other.TryGetComponent<ADamageable>(out ADamageable damageable)) {
+            Debug.Log("to player XXX  Found damageable " + other.gameObject);
+            damageable.TakeBulletDamage(this);
+        }
+    }
+
+
+    private void OnTriggerStay(Collider other) {
+
+        Debug.Log("On trigger stay " + other.gameObject);
+
+
+        DamageOnTriggerStay(other.transform);
+    }
+
+    protected virtual void DamageOnTriggerStay(Transform personToDamage) {
+
+    }
+
 }

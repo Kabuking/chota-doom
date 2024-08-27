@@ -117,7 +117,9 @@ namespace Modules.Player.Scripts.Components
                 if (_playerController.currentStateName != PlayerStateName.Crouch)
                 {
                     Vector3 staggerDirection = (transform.position - iamBullet.transform.position).normalized;
-                    staggerDirection = new Vector3(staggerDirection.x, transform.position.y, staggerDirection.z);
+                    //staggerDirection = new Vector3(staggerDirection.x, transform.position.y, staggerDirection.z);
+                    staggerDirection = - transform.forward;
+
                     TriggerTakeDamage(staggerDirection,iamBullet.damageType, iamBullet.damage);
                 }
             }

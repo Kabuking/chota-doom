@@ -51,7 +51,8 @@ namespace Modules.Loadout.Scripts.Guns
         [SerializeField] private AudioClip _audioClipGunShot;
 
         private EnumAllItemType.GunState gunState = EnumAllItemType.GunState.Carrying;
-        
+
+        public GameObject GunAnimator;
         protected override void OnAwake()
         {
             base.OnAwake();
@@ -87,6 +88,9 @@ namespace Modules.Loadout.Scripts.Guns
             {
                 //Rapid fire
                 activateAutomaticFire = false;
+                if(GunAnimator != null)
+                    GunAnimator.SetActive(false);
+
             }
         }
 
@@ -101,6 +105,8 @@ namespace Modules.Loadout.Scripts.Guns
             if (activateAutomaticFire)
             {
                 RapidFire();
+                if (GunAnimator != null)
+                    GunAnimator.SetActive(true);
             }
         }
 

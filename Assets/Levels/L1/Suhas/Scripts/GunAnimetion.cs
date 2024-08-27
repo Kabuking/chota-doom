@@ -5,6 +5,7 @@ using UnityEngine;
 public class GunAnimetion : MonoBehaviour
 {
 
+    public Transform GunToRotate;
     [SerializeField] private float rotation_speed = 45.0f;
 
     private Vector3 rotation_axis = Vector3.up;
@@ -15,8 +16,8 @@ public class GunAnimetion : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        transform.Rotate(rotation_axis, rotation_speed* Time.deltaTime );
+        GunToRotate.Rotate(rotation_axis, rotation_speed* Time.deltaTime );
     }
 }
