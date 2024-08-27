@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class SlowProjectile : MonoBehaviour
 {
+    [SerializeField] float lookRotationSpeed = 1.2f;
+
     [Header("Instantiation things")]
     public BulletBase projectilePrefab;
     public Transform muzzle;
@@ -40,9 +42,11 @@ public class SlowProjectile : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        transform.LookAt(targetTransform);
+    void Update() {
+        if (targetTransform != null) {
+            Quaternion targetRotation = Quaternion.LookRotation(targetTransform.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lookRotationSpeed * Time.deltaTime);
+        }
     }
 
 

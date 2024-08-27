@@ -17,7 +17,7 @@ namespace Modules.Enemy
         private void Awake()
         {
             InitiatePlayerLocking();
-            SetNonLockedMaterial();
+            //SetNonLockedMaterial();
         }
 
         private void OnEnable()
@@ -54,11 +54,11 @@ namespace Modules.Enemy
 
             if (count > 0)
             {
-                SetLockedRenderer();
+                //SetLockedRenderer();
             }
             else
             {
-                SetNonLockedMaterial();
+                //SetNonLockedMaterial();
             }
         }
         
